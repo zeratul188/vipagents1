@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View view = navigationView.getHeaderView(0);
+
+        TextView txtName = view.findViewById(R.id.txtName);
+        Toast.makeText(getApplicationContext(), txtName.getText().toString(), Toast.LENGTH_SHORT).show();
+        txtName.setText("zeratul188@naver.com");
     }
 
     @Override
