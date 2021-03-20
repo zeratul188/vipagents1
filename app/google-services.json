@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "677747616009",
+    "project_id": "vip-agents",
+    "storage_bucket": "vip-agents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677747616009:android:7a20296a230e42c0d9cbd8",
+        "android_client_info": {
+          "package_name": "com.vip.vipagents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677747616009-at2jncpvm3f7t7600tmeseiqo8vcaifl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vip.vipagents",
+            "certificate_hash": "effe9197a7f311d5bce7773026e4aebaa9dd5ecb"
+          }
+        },
+        {
+          "client_id": "677747616009-5ulfok83mcfrp2p3c961e7ijl6qndtrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK6zAHVZpiQ2C7fCxJkka9sd8gdkHst-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677747616009-5ulfok83mcfrp2p3c961e7ijl6qndtrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
