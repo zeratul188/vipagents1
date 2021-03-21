@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "677747616009",
+    "firebase_url": "https://vip-agents-default-rtdb.firebaseio.com",
     "project_id": "vip-agents",
     "storage_bucket": "vip-agents.appspot.com"
   },

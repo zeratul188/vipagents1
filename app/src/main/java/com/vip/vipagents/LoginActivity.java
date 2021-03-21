@@ -8,13 +8,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText edtID, edtPassword;
-    private Button btnLogin, btnFind, btnSignup;
+    private Button btnLogin, btnSignup;
     private Member member = null;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +36,17 @@ public class LoginActivity extends AppCompatActivity {
         edtID = findViewById(R.id.edtID);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnFind = findViewById(R.id.btnFind);
         btnSignup = findViewById(R.id.btnSignup);
+
+        mDatabase = FirebaseDatabase.getInstance();
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,12 +58,35 @@ public class LoginActivity extends AppCompatActivity {
                     toast("비밀번호를 입력해주십시오.");
                     return;
                 }
-                member = new Member(edtID.getText().toString(), edtPassword.getText().toString(), 3);
-                Intent intent = new Intent();
-                intent.putExtra("logined_member", member);
-                setResult(RESULT_OK, intent);
-                finish();
-                return;
+                mReference = mDatabase.getReference("Members");
+                mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String message = "아이디가 존재하지 않습니다.";
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (data.child("id").getValue().toString().equals(edtID.getText().toString())) {
+                                if (data.child("pwd").getValue().toString().equals(edtPassword.getText().toString())) {
+                                    member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()));
+                                    message = "로그인하셨습니다.";
+                                    Intent intent = new Intent();
+                                    intent.putExtra("logined_member", member);
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                    break;
+                                } else {
+                                    message = "비밀번호가 일치하지 않습니다.";
+                                    break;
+                                }
+                            }
+                        }
+                        toast(message);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
