@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="아이디 / 닉네임"
         android:textSize="15sp"
-        android:textColor="#888888"/>
+        android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="비밀번호"
         android:textSize="15sp"
-        android:textColor="#888888"/>
+        android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,16 +36,6 @@
         android:hint="비밀번호를 입력하십시오."
         android:textSize="15sp"
         android:textColorHint="#bbbbbb"
-        android:layout_marginBottom="15dp"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonmaincustom"
-        style="?android:attr/borderlessButtonStyle"
-        android:text="로그인"
-        android:textColor="#f0f0f0"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
     <Button
         android:layout_width="match_parent"
@@ -60,9 +50,24 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@drawable/buttonsubcustom"
-        android:id="@+id/btnSignin"
+        android:id="@+id/btnSignup"
         style="?android:attr/borderlessButtonStyle"
         android:text="회원 가입"
         android:textColor="#444444"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonmaincustom"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="로그인"
+        android:id="@+id/btnLogin"
+        android:textColor="#f0f0f0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"/>
 
 </LinearLayout>

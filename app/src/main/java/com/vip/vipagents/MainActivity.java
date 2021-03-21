@@ -1,5 +1,7 @@
 package com.vip.vipagents;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -7,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,12 +23,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private Member logined_member = null;
+    private boolean logined = false;
+
+    final static int ACT_RESULT = 0;
+
+    private TextView txtName = null;
+    private LinearLayout layoutGrade = null;
+    private ImageView imgGrade = null;
+    private TextView txtGrade = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/8V95UMG7Fu"));
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -56,9 +70,80 @@ public class MainActivity extends AppCompatActivity {
 
         View view = navigationView.getHeaderView(0);
 
-        TextView txtName = view.findViewById(R.id.txtName);
-        Toast.makeText(getApplicationContext(), txtName.getText().toString(), Toast.LENGTH_SHORT).show();
-        txtName.setText("zeratul188@naver.com");
+        txtName = view.findViewById(R.id.txtName);
+        layoutGrade = view.findViewById(R.id.layoutGrade);
+        imgGrade = view.findViewById(R.id.imgGrade);
+        txtGrade = view.findViewById(R.id.txtGrade);
+
+        if (logined_member != null) {
+            logined = true;
+            layoutGrade.setVisibility(View.VISIBLE);
+            switch (logined_member.getGrade()) {
+                case 0:
+                    imgGrade.setImageResource(R.drawable.darkdiff1);
+                    txtGrade.setText("수습 요원");
+                    break;
+                case 1:
+                    imgGrade.setImageResource(R.drawable.darkdiff1);
+                    txtGrade.setText("요원");
+                    break;
+                case 2:
+                    imgGrade.setImageResource(R.drawable.darkdiff3);
+                    txtGrade.setText("부관");
+                    break;
+                case 3:
+                    imgGrade.setImageResource(R.drawable.darkdiff4);
+                    txtGrade.setText("지휘관");
+                    break;
+            }
+            txtName.setText(logined_member.getId());
+        } else {
+            txtName.setText("로그인해주세요");
+            logined = false;
+            layoutGrade.setVisibility(View.GONE);
+        }
+
+        txtName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!logined) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, ACT_RESULT);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ACT_RESULT:
+                if (resultCode == RESULT_OK) {
+                    logined_member = (Member)data.getSerializableExtra("logined_member");
+                    logined = true;
+                    layoutGrade.setVisibility(View.VISIBLE);
+                    switch (logined_member.getGrade()) {
+                        case 0:
+                            imgGrade.setImageResource(R.drawable.darkdiff1);
+                            txtGrade.setText("수습 요원");
+                            break;
+                        case 1:
+                            imgGrade.setImageResource(R.drawable.darkdiff2);
+                            txtGrade.setText("요원");
+                            break;
+                        case 2:
+                            imgGrade.setImageResource(R.drawable.darkdiff3);
+                            txtGrade.setText("부관");
+                            break;
+                        case 3:
+                            imgGrade.setImageResource(R.drawable.darkdiff4);
+                            txtGrade.setText("지휘관");
+                            break;
+                    }
+                    txtName.setText(logined_member.getId());
+                }
+        }
     }
 
     @Override
