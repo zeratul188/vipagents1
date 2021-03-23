@@ -12,12 +12,12 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtID"
         android:layout_marginTop="5dp"
         android:hint="아이디 / 닉네임을 입력하십시오."
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textColorHint="#bbbbbb"
         android:layout_marginBottom="10dp"/>
     <TextView
@@ -28,13 +28,13 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtPassword"
         android:inputType="textPassword"
         android:layout_marginTop="5dp"
         android:hint="비밀번호를 입력하십시오."
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textColorHint="#bbbbbb"
         android:layout_marginBottom="20dp"/>
     <Button

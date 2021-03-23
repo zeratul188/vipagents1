@@ -1,16 +1,26 @@
 package com.vip.vipagents;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,14 +29,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
     private EditText edtID, edtPassword, edtPasswordRetry;
     private Button btnCheck, btnManagement, btnSignup;
     private RadioGroup rgGrade;
     private RadioButton[] rdoGrade = new RadioButton[4];
+    private LinearLayout layoutGrade;
+    private Switch swtClan;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     private boolean isDoubleCheck = false;
 
@@ -44,13 +58,73 @@ public class SignupActivity extends AppCompatActivity {
         btnManagement = findViewById(R.id.btnManagement);
         btnSignup = findViewById(R.id.btnSignup);
         rgGrade = findViewById(R.id.rgGrade);
+        layoutGrade = findViewById(R.id.layoutGrade);
+        swtClan = findViewById(R.id.swtClan);
 
         for (int i = 0; i < rdoGrade.length; i++) {
             int resource = getResources().getIdentifier("rdoGrade"+(i+1), "id", getPackageName());
             rdoGrade[i] = findViewById(resource);
         }
 
+        swtClan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    layoutGrade.setVisibility(View.VISIBLE);
+                } else {
+                    layoutGrade.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mDatabase = FirebaseDatabase.getInstance();
+
+        btnManagement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = getLayoutInflater().inflate(R.layout.editdialog, null);
+
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final EditText edtText = view.findViewById(R.id.edtText);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+
+                txtView.setText("관리자 비밀번호를 입력해주십시오.");
+                edtText.setHint("비밀번호를 입력해주십시오.");
+                edtText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                edtText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                btnOK.setText("획득");
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (edtText.getText().toString().equals("division123")) {
+                            rdoGrade[2].setEnabled(true);
+                            rdoGrade[3].setEnabled(true);
+                            rdoGrade[2].setTextColor(Color.parseColor("#000000"));
+                            rdoGrade[3].setTextColor(Color.parseColor("#000000"));
+                            toast("권한을 획득하셨습니다.");
+                            btnManagement.setEnabled(false);
+                            alertDialog.dismiss();
+                        } else toast("비밀번호가 일치하지 않습니다.");
+                    }
+                });
+                builder = new AlertDialog.Builder(SignupActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+            }
+        });
 
         btnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +146,7 @@ public class SignupActivity extends AppCompatActivity {
                         if (!isDouble) {
                             edtID.setEnabled(false);
                             isDoubleCheck = true;
+                            btnCheck.setEnabled(false);
                             toast("사용가능한 아이디입니다.");
                         } else toast("이미 존재한 아이디입니다.");
                     }
@@ -111,7 +186,7 @@ public class SignupActivity extends AppCompatActivity {
                         grade = 3;
                         break;
                 }
-                Member member = new Member(edtID.getText().toString(), edtPassword.getText().toString(), grade);
+                Member member = new Member(edtID.getText().toString(), edtPassword.getText().toString(), grade, swtClan.isChecked());
                 mReference.child(edtID.getText().toString()).setValue(member);
                 toast(edtID.getText().toString()+"님 환영합니다!!");
                 finish();

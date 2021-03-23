@@ -12,14 +12,14 @@
         android:textColor="#222222"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp">
         <EditText
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/editcustom"
             android:id="@+id/edtID"
             android:hint="아이디 / 닉네임을 입력하십시오."
@@ -27,7 +27,7 @@
             android:textColorHint="#bbbbbb"/>
         <Button
             android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:background="@drawable/buttonsubcustom"
             android:text="중복 체크"
@@ -43,7 +43,7 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtPassword"
         android:inputType="textPassword"
@@ -60,7 +60,7 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtPasswordRetry"
         android:inputType="textPassword"
@@ -72,68 +72,91 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="현재 등급"
+            android:text="클랜원 여부"
             android:textSize="15sp"
-            android:textColor="#222222"/>
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/buttonsubcustom"
-            android:text="관리자"
-            android:textSize="15sp"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/btnManagement"/>
+            android:textColor="#000000"/>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swtClan"/>
     </LinearLayout>
-    <RadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rgGrade">
-        <RadioButton
+        android:id="@+id/layoutGrade"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rdoGrade1"
-            android:drawableLeft="@drawable/diff1"
-            android:text="수습 요원"
-            android:checked="true"
-            android:buttonTint="#FE6E0E"
-            android:drawablePadding="5dp"
-            android:textColor="#000000"/>
-        <RadioButton
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="현재 등급"
+                android:textSize="15sp"
+                android:textColor="#222222"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/buttonsubcustom"
+                android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/btnManagement"/>
+        </LinearLayout>
+        <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rdoGrade2"
-            android:drawableLeft="@drawable/diff2"
-            android:text="요원"
-            android:buttonTint="#FE6E0E"
-            android:drawablePadding="5dp"
-            android:textColor="#000000"/>
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rdoGrade3"
-            android:drawableLeft="@drawable/diff3"
-            android:text="부관"
-            android:drawablePadding="5dp"
-            android:enabled="false"
-            android:buttonTint="#FE6E0E"
-            android:textColor="#FF2222"/>
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rdoGrade4"
-            android:drawableLeft="@drawable/diff4"
-            android:text="지휘관"
-            android:drawablePadding="5dp"
-            android:enabled="false"
-            android:buttonTint="#FE6E0E"
-            android:textColor="#FF2222"/>
-    </RadioGroup>
+            android:id="@+id/rgGrade">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdoGrade1"
+                android:drawableLeft="@drawable/diff1"
+                android:text="수습 요원"
+                android:checked="true"
+                android:buttonTint="#FE6E0E"
+                android:drawablePadding="5dp"
+                android:textColor="#000000"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdoGrade2"
+                android:drawableLeft="@drawable/diff2"
+                android:text="요원"
+                android:buttonTint="#FE6E0E"
+                android:drawablePadding="5dp"
+                android:textColor="#000000"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdoGrade3"
+                android:drawableLeft="@drawable/diff3"
+                android:text="부관"
+                android:drawablePadding="5dp"
+                android:enabled="false"
+                android:buttonTint="#FE6E0E"
+                android:textColor="#FF2222"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdoGrade4"
+                android:drawableLeft="@drawable/diff4"
+                android:text="지휘관"
+                android:drawablePadding="5dp"
+                android:enabled="false"
+                android:buttonTint="#FE6E0E"
+                android:textColor="#FF2222"/>
+        </RadioGroup>
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

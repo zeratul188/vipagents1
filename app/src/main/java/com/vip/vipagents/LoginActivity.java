@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private EditText edtID, edtPassword;
     private Button btnLogin, btnSignup;
     private Member member = null;
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                         for (DataSnapshot data : snapshot.getChildren()) {
                             if (data.child("id").getValue().toString().equals(edtID.getText().toString())) {
                                 if (data.child("pwd").getValue().toString().equals(edtPassword.getText().toString())) {
-                                    member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()));
+                                    member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
                                     message = "로그인하셨습니다.";
                                     Intent intent = new Intent();
                                     intent.putExtra("logined_member", member);

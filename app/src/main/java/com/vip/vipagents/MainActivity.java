@@ -1,7 +1,9 @@
 package com.vip.vipagents;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,6 +20,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -30,13 +37,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private Member logined_member = null;
     private boolean logined = false;
 
-    final static int ACT_RESULT = 0;
+    private final static int ACT_RESULT = 0;
+    private final static int ACT_SETTING_RESULT = 1;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
 
     private TextView txtName = null;
     private LinearLayout layoutGrade = null;
@@ -72,34 +87,61 @@ public class MainActivity extends AppCompatActivity {
 
         View view = navigationView.getHeaderView(0);
 
+        toolbar.setTitleTextColor(Color.parseColor("#000000"));
+        toolbar.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
         txtName = view.findViewById(R.id.txtName);
         layoutGrade = view.findViewById(R.id.layoutGrade);
         imgGrade = view.findViewById(R.id.imgGrade);
         txtGrade = view.findViewById(R.id.txtGrade);
 
-        if (logined_member != null) {
-            logined = true;
-            layoutGrade.setVisibility(View.VISIBLE);
-            switch (logined_member.getGrade()) {
-                case 0:
-                    imgGrade.setImageResource(R.drawable.darkdiff1);
-                    txtGrade.setText("수습 요원");
-                    break;
-                case 1:
-                    imgGrade.setImageResource(R.drawable.darkdiff1);
-                    txtGrade.setText("요원");
-                    break;
-                case 2:
-                    imgGrade.setImageResource(R.drawable.darkdiff3);
-                    txtGrade.setText("부관");
-                    break;
-                case 3:
-                    imgGrade.setImageResource(R.drawable.darkdiff4);
-                    txtGrade.setText("지휘관");
-                    break;
-            }
-            txtName.setText(logined_member.getId());
-        } else {
+        mDatabase = FirebaseDatabase.getInstance();
+        if (loadProfile() != null && !loadProfile().equals("null")) {
+            mReference = mDatabase.getReference("Members");
+            mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot data : snapshot.getChildren()) {
+                        if (data.child("id").getValue().toString().equals(loadProfile())) {
+                            logined_member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(),
+                                    Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
+                            toast(data.child("id").getValue().toString()+"님 환영합니다!");
+                        }
+                    }
+                    if (logined_member != null) {
+                        logined = true;
+                        if (logined_member.isClan()) layoutGrade.setVisibility(View.VISIBLE);
+                        else layoutGrade.setVisibility(View.GONE);
+                        switch (logined_member.getGrade()) {
+                            case 0:
+                                imgGrade.setImageResource(R.drawable.darkdiff1);
+                                txtGrade.setText("수습 요원");
+                                break;
+                            case 1:
+                                imgGrade.setImageResource(R.drawable.darkdiff1);
+                                txtGrade.setText("요원");
+                                break;
+                            case 2:
+                                imgGrade.setImageResource(R.drawable.darkdiff3);
+                                txtGrade.setText("부관");
+                                break;
+                            case 3:
+                                imgGrade.setImageResource(R.drawable.darkdiff4);
+                                txtGrade.setText("지휘관");
+                                break;
+                        }
+                        txtName.setText(logined_member.getId());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        if (logined_member == null) {
             txtName.setText("로그인해주세요");
             logined = false;
             layoutGrade.setVisibility(View.GONE);
@@ -116,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void toast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -124,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     logined_member = (Member)data.getSerializableExtra("logined_member");
                     logined = true;
-                    layoutGrade.setVisibility(View.VISIBLE);
+                    if (logined_member.isClan()) layoutGrade.setVisibility(View.VISIBLE);
+                    else layoutGrade.setVisibility(View.GONE);
                     switch (logined_member.getGrade()) {
                         case 0:
                             imgGrade.setImageResource(R.drawable.darkdiff1);
@@ -144,6 +191,18 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                     txtName.setText(logined_member.getId());
+                    saveProfile(logined_member.getId());
+                }
+                break;
+            case ACT_SETTING_RESULT:
+                if (resultCode == RESULT_OK) {
+                    boolean logouted = data.getBooleanExtra("logouted", false);
+                    if (logouted) {
+                        logined_member = null;
+                        txtName.setText("로그인해주세요");
+                        logined = false;
+                        layoutGrade.setVisibility(View.GONE);
+                    }
                 }
         }
     }
@@ -153,7 +212,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
+                if (logined_member != null) intent.putExtra("id", logined_member.getId());
+                intent.putExtra("logined", logined);
+                startActivityForResult(intent, ACT_SETTING_RESULT);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -171,5 +232,44 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void saveProfile(String id) {
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput("id.txt", MODE_PRIVATE);
+            fos.write(id.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null) fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String loadProfile() {
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("id.txt");
+            byte[] memoData = new byte[fis.available()];
+            while(fis.read(memoData) != -1) {}
+            return new String(memoData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "/*null*/";
     }
 }
