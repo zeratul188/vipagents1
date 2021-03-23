@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="이벤트"
-            android:textSize="22sp"
+            android:textSize="17sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="공지사항"
-            android:textSize="22sp"
+            android:textSize="17sp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
             android:textColor="#000000"/>
