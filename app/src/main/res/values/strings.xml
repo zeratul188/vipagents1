@@ -12,5 +12,5 @@
     <string name="menu_slideshow">콘텐츠</string>
     <string name="menu_tools">이벤트</string>
     <string name="menu_share">공지사항</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_send">레이드 참여</string>
 </resources>
