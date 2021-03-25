@@ -88,6 +88,6 @@
             android:text="Notice Content"
             android:padding="10dp"
             android:textColor="#000000"
-            android:textSize="18sp"/>
+            android:textSize="14sp"/>
     </ScrollView>
 </LinearLayout>

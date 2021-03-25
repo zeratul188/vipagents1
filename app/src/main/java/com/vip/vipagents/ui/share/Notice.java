@@ -1,13 +1,13 @@
 package com.vip.vipagents.ui.share;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Notice {
-    private String title, writer, content;
-    private int view;
-    private Date date;
+public class Notice implements Serializable {
+    private String title, writer, content, date;
+    private int view, number;
 
-    public Notice(String title, String writer, String content, int view, Date date) {
+    public Notice(int number, String title, String writer, String content, int view, String date) {
+        this.number = number;
         this.title = title;
         this.writer = writer;
         this.content = content;
@@ -47,11 +47,19 @@ public class Notice {
         this.content = content;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
