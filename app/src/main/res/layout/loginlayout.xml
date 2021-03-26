@@ -12,7 +12,7 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtID"
         android:layout_marginTop="5dp"
@@ -28,7 +28,7 @@
         android:textColor="#222222"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@drawable/editcustom"
         android:id="@+id/edtPassword"
         android:inputType="textPassword"
@@ -51,13 +51,13 @@
         android:layout_weight="1"/>
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/buttonmaincustom"
         style="?android:attr/borderlessButtonStyle"
         android:text="로그인"
         android:id="@+id/btnLogin"
         android:textColor="#f0f0f0"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"/>
 

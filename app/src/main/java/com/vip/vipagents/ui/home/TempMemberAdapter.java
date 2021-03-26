@@ -65,7 +65,7 @@ public class TempMemberAdapter extends BaseAdapter {
 
         if (!members.get(position).isClan()) {
             imgGrade.setVisibility(View.GONE);
-            txtGrade.setText("무클랜");
+            txtGrade.setText("클랜 없음");
         }
 
         return convertView;

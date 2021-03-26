@@ -14,7 +14,7 @@
             android:layout_height="70dp"
             android:background="@drawable/buttonsettingcustom"
             android:drawableLeft="@drawable/ic_person_black_24dp"
-            android:text="내 정보 수정"
+            android:text="내 정보"
             android:id="@+id/btnInfo"
             android:gravity="left|center"
             android:drawablePadding="25dp"

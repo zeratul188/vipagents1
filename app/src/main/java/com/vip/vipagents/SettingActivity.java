@@ -61,7 +61,8 @@ public class SettingActivity extends BaseActivity {
                     toast("로그인 상태가 아닙니다.");
                     return;
                 }
-                toast("제작 중...");
+                Intent intent = new Intent(SettingActivity.this, MyPageActivity.class);
+                startActivity(intent);
             }
         });
 
