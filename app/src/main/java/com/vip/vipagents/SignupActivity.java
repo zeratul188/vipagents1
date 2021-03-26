@@ -69,6 +69,7 @@ public class SignupActivity extends BaseActivity {
         swtClan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rdoGrade[0].setChecked(true);
                 if (isChecked) {
                     layoutGrade.setVisibility(View.VISIBLE);
                 } else {

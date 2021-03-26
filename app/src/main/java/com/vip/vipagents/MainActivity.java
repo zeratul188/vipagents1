@@ -96,6 +96,27 @@ public class MainActivity extends BaseActivity {
         txtGrade = view.findViewById(R.id.txtGrade);
 
         mDatabase = FirebaseDatabase.getInstance();
+
+        if (logined_member == null) {
+            txtName.setText("로그인해주세요");
+            logined = false;
+            layoutGrade.setVisibility(View.GONE);
+        }
+
+        txtName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!logined) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, ACT_RESULT);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (loadProfile() != null && !loadProfile().equals("null")) {
             mReference = mDatabase.getReference("Members");
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -118,7 +139,7 @@ public class MainActivity extends BaseActivity {
                                 txtGrade.setText("수습 요원");
                                 break;
                             case 1:
-                                imgGrade.setImageResource(R.drawable.darkdiff1);
+                                imgGrade.setImageResource(R.drawable.darkdiff2);
                                 txtGrade.setText("요원");
                                 break;
                             case 2:
@@ -140,22 +161,6 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
-
-        if (logined_member == null) {
-            txtName.setText("로그인해주세요");
-            logined = false;
-            layoutGrade.setVisibility(View.GONE);
-        }
-
-        txtName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!logined) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivityForResult(intent, ACT_RESULT);
-                }
-            }
-        });
     }
 
     private void toast(String message) {
@@ -202,6 +207,28 @@ public class MainActivity extends BaseActivity {
                         txtName.setText("로그인해주세요");
                         logined = false;
                         layoutGrade.setVisibility(View.GONE);
+                    } else {
+                        if (logined_member.isClan()) layoutGrade.setVisibility(View.VISIBLE);
+                        else layoutGrade.setVisibility(View.GONE);
+                        switch (logined_member.getGrade()) {
+                            case 0:
+                                imgGrade.setImageResource(R.drawable.darkdiff1);
+                                txtGrade.setText("수습 요원");
+                                break;
+                            case 1:
+                                imgGrade.setImageResource(R.drawable.darkdiff2);
+                                txtGrade.setText("요원");
+                                break;
+                            case 2:
+                                imgGrade.setImageResource(R.drawable.darkdiff3);
+                                txtGrade.setText("부관");
+                                break;
+                            case 3:
+                                imgGrade.setImageResource(R.drawable.darkdiff4);
+                                txtGrade.setText("지휘관");
+                                break;
+                        }
+                        txtName.setText(logined_member.getId());
                     }
                 }
         }

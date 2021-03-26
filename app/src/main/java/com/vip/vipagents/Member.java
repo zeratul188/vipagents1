@@ -2,7 +2,7 @@ package com.vip.vipagents;
 
 import java.io.Serializable;
 
-public class Member implements Serializable {
+public class Member implements Serializable, Comparable<Member> {
     private String id, pwd;
     private int grade;
     private boolean isClan;
@@ -44,5 +44,13 @@ public class Member implements Serializable {
 
     public void setClan(boolean clan) {
         isClan = clan;
+    }
+
+    @Override
+    public int compareTo(Member member) {
+        if (this.isClan && !member.isClan) return -1;
+        if (!this.isClan && member.isClan) return 1;
+        if (this.grade < member.grade) return 1;
+        else return -1;
     }
 }

@@ -187,6 +187,8 @@ public class SettingActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
                 return true;
             }
@@ -212,4 +214,10 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+    }
 }
