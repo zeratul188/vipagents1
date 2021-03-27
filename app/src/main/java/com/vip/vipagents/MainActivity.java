@@ -3,11 +3,9 @@ package com.vip.vipagents;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
@@ -126,7 +123,6 @@ public class MainActivity extends BaseActivity {
                         if (data.child("id").getValue().toString().equals(loadProfile())) {
                             logined_member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(),
                                     Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
-                            toast(data.child("id").getValue().toString()+"님 환영합니다!");
                         }
                     }
                     if (logined_member != null) {

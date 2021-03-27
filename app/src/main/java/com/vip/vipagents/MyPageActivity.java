@@ -1,6 +1,8 @@
 package com.vip.vipagents;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +33,8 @@ public class MyPageActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +81,62 @@ public class MyPageActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
 
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+
+                txtView.setText("데이터를 삭제하면 복구하실 수 없습니다. 그래도 삭제하시겠습니까?");
+                btnOK.setText("삭제");
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mReference = mDatabase.getReference("Members");
+                        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if (data.child("id").getValue().toString().equals(loadProfile())) {
+                                        Member member = new Member(loadProfile(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
+                                        mReference.child(loadProfile()).removeValue();
+                                        mReference.child(loadProfile()).setValue(member);
+                                        toast("모든 콘텐츠 데이터를 삭제하였습니다.");
+                                        alertDialog.dismiss();
+                                        break;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
+
+                builder = new AlertDialog.Builder(MyPageActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
             }
         });
+    }
+
+    private void toast(String message) {
+        Toast.makeText(MyPageActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
