@@ -1,5 +1,6 @@
 package com.vip.vipagents.ui.send;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -97,6 +98,7 @@ public class SendFragment extends Fragment {
                                 haveDarkMember = true;
                                 txtView.setText("이미 칠흑의 시간 레이드에 참여하였습니다. ");
                                 btnOK.setText("참여 취소");
+                                chkCommander.setVisibility(View.GONE);
                                 return;
                             }
                         }
@@ -123,6 +125,20 @@ public class SendFragment extends Fragment {
                     }
                 });
 
+                darkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (Boolean.parseBoolean(data.child("commander").getValue().toString())) chkCommander.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 chkCommander.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,7 +151,6 @@ public class SendFragment extends Fragment {
                                         if (Boolean.parseBoolean(data.child("commander").getValue().toString())) haveCommander = true;
                                     }
                                     if (haveCommander) {
-                                        toast("이미 공대장이 존재합니다.");
                                         chkCommander.setChecked(false);
                                     }
                                 }
@@ -214,6 +229,7 @@ public class SendFragment extends Fragment {
                                 haveIronHorseMember = true;
                                 txtView.setText("이미 철마 레이드에 참여하였습니다. ");
                                 btnOK.setText("참여 취소");
+                                chkCommander.setVisibility(View.GONE);
                                 return;
                             }
                         }
@@ -240,6 +256,20 @@ public class SendFragment extends Fragment {
                     }
                 });
 
+                ironhorseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (Boolean.parseBoolean(data.child("commander").getValue().toString())) chkCommander.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 chkCommander.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -252,7 +282,6 @@ public class SendFragment extends Fragment {
                                         if (Boolean.parseBoolean(data.child("commander").getValue().toString())) haveCommander = true;
                                     }
                                     if (haveCommander) {
-                                        toast("이미 공대장이 존재합니다.");
                                         chkCommander.setChecked(false);
                                     }
                                 }
@@ -412,6 +441,7 @@ public class SendFragment extends Fragment {
             }
         });
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
@@ -421,8 +451,10 @@ public class SendFragment extends Fragment {
                         } else {
                             fabReset.setVisibility(View.GONE);
                         }
+                        return;
                     }
                 }
+                fabReset.setVisibility(View.GONE);
             }
 
             @Override

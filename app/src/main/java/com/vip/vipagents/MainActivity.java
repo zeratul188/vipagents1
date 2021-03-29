@@ -2,16 +2,20 @@ package com.vip.vipagents;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,6 +33,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +55,8 @@ public class MainActivity extends BaseActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     private TextView txtName = null;
     private LinearLayout layoutGrade = null;
@@ -81,6 +89,30 @@ public class MainActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        if (NetworkStatus.getConnecttivityStatus(getApplicationContext()) == NetworkStatus.TYPE_NOT_CONNECTED) {
+            View view = getLayoutInflater().inflate(R.layout.warningdialog, null);
+
+            final TextView txtView = view.findViewById(R.id.txtView);
+            final Button btnOK = view.findViewById(R.id.btnOK);
+
+            txtView.setText("네트워크가 연결되어 있지 않습니다. 연결 상태를 확인해주십시오.");
+            btnOK.setText("종료");
+
+            btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setView(view);
+
+            alertDialog = builder.create();
+            alertDialog.setCancelable(false);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show();
+        }
 
         View view = navigationView.getHeaderView(0);
 

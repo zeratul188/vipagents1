@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,10 @@ public class SettingActivity extends BaseActivity {
     private AlertDialog alertDialog = null;
 
     private Button btnInfo, btnLogout, btnDelete;
+    private TextView txtNetwork, txtVersion;
+    private ImageView imgNetwork;
+
+    private AppDataPackage adp;
 
     private String id = "null";
     private boolean logined = false;
@@ -47,8 +52,14 @@ public class SettingActivity extends BaseActivity {
         btnInfo = findViewById(R.id.btnInfo);
         btnLogout = findViewById(R.id.btnLogout);
         btnDelete = findViewById(R.id.btnDelete);
+        txtNetwork = findViewById(R.id.txtNetwork);
+        txtVersion = findViewById(R.id.txtVersion);
+        imgNetwork = findViewById(R.id.imgNetwork);
 
         mDatabase = FirebaseDatabase.getInstance();
+        adp = new AppDataPackage();
+
+        txtVersion.setText(adp.getVersionInfo(SettingActivity.this));
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -211,6 +222,28 @@ public class SettingActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switch (NetworkStatus.getConnecttivityStatus(SettingActivity.this)) {
+            case NetworkStatus.TYPE_WIFI:
+                txtNetwork.setText("WI-FI");
+                txtNetwork.setTextColor(Color.parseColor("#117711"));
+                imgNetwork.setImageResource(R.drawable.ic_wifi_black_24dp);
+                break;
+            case NetworkStatus.TYPE_MOBILE:
+                txtNetwork.setText("LTE 또는 3G");
+                txtNetwork.setTextColor(Color.parseColor("#FF7700"));
+                imgNetwork.setImageResource(R.drawable.ic_import_export_black_24dp);
+                break;
+            case NetworkStatus.TYPE_NOT_CONNECTED:
+                txtNetwork.setText("네트워크에 연결되어 있지 않음");
+                txtNetwork.setTextColor(Color.parseColor("#FF4444"));
+                imgNetwork.setImageResource(R.drawable.ic_clear_black_24dp);
+                break;
         }
     }
 
