@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
+    private DatabaseReference mReference, darkReference, ironhorseReference;
 
     private ArrayList<Notice> notices;
     private MainNoticeAdapter noticeAdapter;
@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     private TempMemberAdapter memberAdapter;
 
     private ListView listNotice, listMember;
-    private TextView txtNotice, txtAll, txtMemberInfo;
+    private TextView txtNotice, txtAll, txtMemberInfo, txtDark, txtIronHorse;
     private FrameLayout layoutNotice;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,6 +60,8 @@ public class HomeFragment extends Fragment {
         listMember = root.findViewById(R.id.listMember);
         txtAll = root.findViewById(R.id.txtAll);
         txtMemberInfo = root.findViewById(R.id.txtMemberInfo);
+        txtDark = root.findViewById(R.id.txtDark);
+        txtIronHorse = root.findViewById(R.id.txtIronHorse);
 
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -121,15 +123,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getChildrenCount() > 0) {
-                    layoutNotice.getLayoutParams().height = 400;
+                    /*layoutNotice.getLayoutParams().height = 400;
                     layoutNotice.setLayoutParams(layoutNotice.getLayoutParams());
-                    layoutNotice.requestLayout();
+                    layoutNotice.requestLayout();*/
                     txtNotice.setVisibility(View.GONE);
                     listNotice.setVisibility(View.VISIBLE);
                 } else {
-                    layoutNotice.getLayoutParams().height = 200;
+                    /*layoutNotice.getLayoutParams().height = 200;
                     layoutNotice.setLayoutParams(layoutNotice.getLayoutParams());
-                    layoutNotice.requestLayout();
+                    layoutNotice.requestLayout();*/
                     txtNotice.setVisibility(View.VISIBLE);
                     listNotice.setVisibility(View.GONE);
                 }
@@ -143,6 +145,38 @@ public class HomeFragment extends Fragment {
                     if (now == max) break;
                 }
                 noticeAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        darkReference = mDatabase.getReference("Raid/Dark");
+        darkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int dark = 0;
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    dark++;
+                }
+                txtDark.setText(Integer.toString(dark));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        ironhorseReference = mDatabase.getReference("Raid/IronHorse");
+        ironhorseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int ironhorse = 0;
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    ironhorse++;
+                }
+                txtIronHorse.setText(Integer.toString(ironhorse));
             }
 
             @Override
