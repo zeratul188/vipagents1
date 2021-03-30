@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_slideshow"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:id="@+id/layoutTimeAttack"
+        android:background="@drawable/contentbuttonsuctom">
+        <View
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/contentviewcustom"
+            android:layout_marginRight="20dp"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="임무 타임어택"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="임무별 타임어택을 기록하여 클랜원과 경쟁을 하는 콘텐츠입니다. 보통, 어려움, 매우 어려움, 영웅, 전설 등 모든 임무에서 타임어택을 하실 수 있습니다."
+                android:textSize="14sp"
+                android:textColor="#444444"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

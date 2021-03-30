@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@drawable/listcustom"
-    android:layout_height="match_parent" android:padding="10dp">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtTitle"
-        android:text="Noitce Title"
-        android:textSize="20sp"
-        android:textColor="#000000"
-        android:layout_marginBottom="5dp"/>
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@drawable/contentbuttonsuctom"
+    android:layout_height="match_parent">
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/contentviewcustom"
+        android:layout_marginRight="15dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="작성자 : "
-            android:textSize="15sp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/txtTitle"
+            android:text="Noitce Title"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_marginBottom="5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtWriter"
-            android:text="Notice Writer"
-            android:textSize="15sp"
-            android:textColor="#000000"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성자 : "
+                android:textSize="15sp"
+                android:textColor="#444444"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtWriter"
+                android:text="Notice Writer"
+                android:textSize="15sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="작성일자 : "
-            android:textSize="15sp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="작성일자 : "
+                android:textSize="15sp"
+                android:textColor="#444444"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDate"
+                android:text="Notice Date"
+                android:textSize="15sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtDate"
-            android:text="Notice Date"
-            android:textSize="15sp"
-            android:textColor="#000000"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="조회수 : "
-            android:textSize="15sp"
-            android:textColor="#444444"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtView"
-            android:text="Notice View"
-            android:textSize="15sp"
-            android:textColor="#000000"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조회수 : "
+                android:textSize="15sp"
+                android:textColor="#444444"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtView"
+                android:text="Notice View"
+                android:textSize="15sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
