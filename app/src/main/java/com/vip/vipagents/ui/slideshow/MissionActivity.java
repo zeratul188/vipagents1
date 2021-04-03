@@ -29,6 +29,8 @@ public class MissionActivity extends AppCompatActivity {
     private ArrayAdapter difficultyAdapter, missionsAdapter, modeAdapter;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private MissionAdapter missionAdapter;
+    private ArrayList<Mission> missions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class MissionActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     @Override
