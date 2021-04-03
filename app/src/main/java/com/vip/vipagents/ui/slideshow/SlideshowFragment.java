@@ -1,5 +1,6 @@
 package com.vip.vipagents.ui.slideshow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,8 @@ public class SlideshowFragment extends Fragment {
         layoutTimeAttack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Layout Clicked!!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MissionActivity.class);
+                startActivity(intent);
             }
         });
 

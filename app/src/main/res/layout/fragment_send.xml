@@ -74,7 +74,11 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/listDark"
-            android:layout_marginBottom="10dp"/>
+            android:background="@drawable/contentbuttonsuctom"
+            android:layout_margin="10dp"
+            android:divider="#20666666"
+            android:dividerHeight="1dp"
+            android:padding="10dp"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="100dp">
@@ -140,7 +144,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/listIronHorse"/>
+            android:id="@+id/listIronHorse"
+            android:background="@drawable/contentbuttonsuctom"
+            android:layout_margin="10dp"
+            android:divider="#20666666"
+            android:dividerHeight="1dp"
+            android:padding="10dp"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
