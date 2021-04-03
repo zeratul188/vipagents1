@@ -9,9 +9,10 @@
     tools:context=".ui.slideshow.MissionActivity"
     android:padding="10dp">
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/sprMissions"
+        android:layout_gravity="center"
         android:spinnerMode="dropdown"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,17 +25,41 @@
             android:spinnerMode="dropdown"
             android:id="@+id/sprDifficulty"
             android:layout_marginRight="5dp"/>
-
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown"
             android:id="@+id/sprMode"/>
     </LinearLayout>
-    <ListView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#00000000"
-        android:id="@+id/listMission"/>
+        android:layout_weight="1">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#00000000"
+            android:id="@+id/listMission"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="기록된 리더보드가 없습니다."
+            android:id="@+id/txtInfo"
+            android:textAlignment="center"
+            android:paddingTop="100dp"
+            android:textSize="20sp"
+            android:textColor="#000000"/>
+    </FrameLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/buttonmaincustom"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="기록하기"
+        android:id="@+id/btnAdd"
+        android:textColor="#f0f0f0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"/>
 </LinearLayout>

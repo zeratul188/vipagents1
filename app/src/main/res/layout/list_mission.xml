@@ -8,6 +8,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/viewLine"
             android:background="@drawable/contentviewcustom"/>
         <TextView
             android:layout_width="wrap_content"
@@ -54,14 +55,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="완료 시간 : "
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:textColor="#444444"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTime"
                 android:text="9시간 59분 59초"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:textColor="#000000"/>
         </LinearLayout>
     </LinearLayout>

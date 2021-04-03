@@ -1,6 +1,7 @@
 package com.vip.vipagents.ui.slideshow;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -43,9 +44,24 @@ public class MissionAdapter extends BaseAdapter {
         TextView txtID = convertView.findViewById(R.id.txtID);
         ImageView imgGrade = convertView.findViewById(R.id.imgGrade);
         TextView txtTime = convertView.findViewById(R.id.txtTime);
+        View viewLine = convertView.findViewById(R.id.viewLine);
 
         txtTop.setText(Integer.toString(position+1));
         txtID.setText(missions.get(position).getName());
+
+        switch (position+1) {
+            case 1:
+                viewLine.setBackgroundResource(R.drawable.firstcustom);
+                break;
+            case 2:
+                viewLine.setBackgroundResource(R.drawable.secondcustom);
+                break;
+            case 3:
+                viewLine.setBackgroundResource(R.drawable.thirdcustom);
+                break;
+                default:
+                    viewLine.setBackgroundResource(R.drawable.othercustom);
+        }
 
         switch (missions.get(position).getGrade()) {
             case 0:
@@ -67,9 +83,9 @@ public class MissionAdapter extends BaseAdapter {
 
         int hour, min, second;
         second = missions.get(position).getTime();
-        hour = second % 3600;
+        hour = second / 3600;
         second %= 3600;
-        min = second % 60;
+        min = second / 60;
         second %= 60;
 
         String str = "";

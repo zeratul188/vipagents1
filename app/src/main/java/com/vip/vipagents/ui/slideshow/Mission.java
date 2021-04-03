@@ -1,18 +1,25 @@
 package com.vip.vipagents.ui.slideshow;
 
-public class Mission {
+public class Mission implements Comparable<Mission>{
     private String name;
-    private int time, difficulty, grade;
-    private boolean isAttack, isPursuit, isClan;
+    private int time, difficulty, grade, mode;
+    private boolean isClan;
 
-    public Mission(String name, int time, int difficulty, int grade, boolean isAttack, boolean isPursuit, boolean isClan) {
+    public Mission(String name, int time, int difficulty, int grade, int mode, boolean isClan) {
         this.name = name;
         this.time = time;
         this.difficulty = difficulty;
         this.grade = grade;
-        this.isAttack = isAttack;
-        this.isPursuit = isPursuit;
+        this.mode = mode;
         this.isClan = isClan;
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public boolean isClan() {
@@ -55,19 +62,10 @@ public class Mission {
         this.difficulty = difficulty;
     }
 
-    public boolean isAttack() {
-        return isAttack;
-    }
-
-    public void setAttack(boolean attack) {
-        isAttack = attack;
-    }
-
-    public boolean isPursuit() {
-        return isPursuit;
-    }
-
-    public void setPursuit(boolean pursuit) {
-        isPursuit = pursuit;
+    @Override
+    public int compareTo(Mission o) {
+        if (this.time > o.time) return 1;
+        else if (this.time == o.time) return 0;
+        else return -1;
     }
 }
