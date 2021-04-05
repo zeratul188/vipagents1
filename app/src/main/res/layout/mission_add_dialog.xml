@@ -15,6 +15,7 @@
                 android:layout_height="wrap_content"
                 android:text="난이도"
                 android:textSize="15sp"
+                android:layout_marginRight="5dp"
                 android:textColor="#444444"/>
             <TextView
                 android:layout_width="0dp"
@@ -22,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="모드"
                 android:textSize="15sp"
+                android:layout_marginLeft="5dp"
                 android:textColor="#444444"/>
         </TableRow>
         <TableRow>
@@ -30,12 +32,16 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
+                android:background="@drawable/buttonsubcustom"
+                android:layout_marginRight="5dp"
                 android:id="@+id/sprDifficulty2"/>
             <Spinner
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown"
+                android:background="@drawable/buttonsubcustom"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/sprMode2"/>
         </TableRow>
     </TableLayout>

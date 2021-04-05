@@ -52,6 +52,9 @@ public class MainActivity extends BaseActivity {
 
     private final static int ACT_RESULT = 0;
     private final static int ACT_SETTING_RESULT = 1;
+    private final static int END_TIME = 2000;
+
+    private long backKeyPressedTime = 0;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -141,6 +144,49 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + END_TIME) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast("\"뒤로\"버튼을 한번 더 누르시면 앱이 종료됩니다.");
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + END_TIME) {
+            finish();
+        }
+
+        /*View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
+
+        final TextView txtView = view.findViewById(R.id.txtView);
+        final Button btnOK = view.findViewById(R.id.btnOK);
+        final Button btnCancel = view.findViewById(R.id.btnCancel);
+
+        txtView.setText("앱을 종료하시겠습니까?");
+        btnOK.setText("종료");
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();*/
     }
 
     @Override

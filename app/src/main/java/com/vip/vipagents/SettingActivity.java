@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -135,7 +136,7 @@ public class SettingActivity extends BaseActivity {
                 final Button btnCancel = view.findViewById(R.id.btnCancel);
                 final Button btnOK = view.findViewById(R.id.btnOK);
 
-                txtView.setText("회원님의 정보를 삭제하시겠습니까?\n\n삭제하실려면 비밀번호를 입력해주십시오.");
+                txtView.setText("회원님의 정보를 삭제하시겠습니까?\n삭제하실려면 비밀번호를 입력해주십시오.");
                 txtView.setTextColor(Color.parseColor("#FF2222"));
                 edtText.setHint("비밀번호를 입력해주십시오.");
                 edtText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -159,6 +160,7 @@ public class SettingActivity extends BaseActivity {
                                 for (DataSnapshot data : snapshot.getChildren()) {
                                     if (data.child("id").getValue().toString().equals(id)) {
                                         if (data.child("pwd").getValue().toString().equals(edtText.getText().toString())) {
+                                            deleteReaderBoard(loadProfile());
                                             mReference.child(id).removeValue();
                                             toast("회원님의 계정이 삭제되었습니다.");
                                             Intent intent = new Intent();
@@ -186,6 +188,28 @@ public class SettingActivity extends BaseActivity {
                 alertDialog.setCancelable(false);
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 alertDialog.show();
+            }
+        });
+    }
+
+    private void deleteReaderBoard(final String name) {
+        final DatabaseReference leaderboardReference = mDatabase.getReference("Contents/Missions");
+        leaderboardReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    for (DataSnapshot data2 : data.getChildren()) {
+                        if (data2.getKey().equals("name")) continue;
+                        if (data2.child("name").getValue().toString().equals(name)) {
+                            leaderboardReference.child(data.getKey()).child(data2.getKey()).removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -245,6 +269,27 @@ public class SettingActivity extends BaseActivity {
                 imgNetwork.setImageResource(R.drawable.ic_clear_black_24dp);
                 break;
         }
+    }
+
+    private String loadProfile() {
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("id.txt");
+            byte[] memoData = new byte[fis.available()];
+            while(fis.read(memoData) != -1) {}
+            return new String(memoData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fis != null) fis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "/*null*/";
     }
 
     @Override

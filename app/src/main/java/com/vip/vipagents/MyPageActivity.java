@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +82,7 @@ public class MyPageActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
+                final View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
 
                 final TextView txtView = view.findViewById(R.id.txtView);
                 final Button btnCancel = view.findViewById(R.id.btnCancel);
@@ -99,28 +100,10 @@ public class MyPageActivity extends AppCompatActivity {
 
                 btnOK.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mReference = mDatabase.getReference("Members");
-                        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot data : snapshot.getChildren()) {
-                                    if (data.child("id").getValue().toString().equals(loadProfile())) {
-                                        Member member = new Member(loadProfile(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
-                                        mReference.child(loadProfile()).removeValue();
-                                        mReference.child(loadProfile()).setValue(member);
-                                        toast("모든 콘텐츠 데이터를 삭제하였습니다.");
-                                        alertDialog.dismiss();
-                                        break;
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+                    public void onClick(final View v) {
+                        deleteReaderBoard();
+                        toast("모든 콘텐츠 데이터를 삭제하였습니다.");
+                        alertDialog.dismiss();
                     }
                 });
 
@@ -131,6 +114,28 @@ public class MyPageActivity extends AppCompatActivity {
                 alertDialog.setCancelable(false);
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 alertDialog.show();
+            }
+        });
+    }
+
+    private void deleteReaderBoard() {
+        mReference = mDatabase.getReference("Contents/Missions");
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    for (DataSnapshot data2 : data.getChildren()) {
+                        if (data2.getKey().equals("name")) continue;
+                        if (data2.child("name").getValue().toString().equals(loadProfile())) {
+                            mReference.child(data.getKey()).child(data2.getKey()).removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

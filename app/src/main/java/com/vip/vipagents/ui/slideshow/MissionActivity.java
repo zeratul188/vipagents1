@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -158,6 +160,50 @@ public class MissionActivity extends AppCompatActivity {
 
                 sprDifficulty2.setAdapter(difficultyAdapter);
                 sprMode2.setAdapter(modeAdapter);
+
+                edtMin.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (edtMin.getText().toString().equals("")) return;
+                        int value = Integer.parseInt(edtMin.getText().toString());
+                        if (value < 0 || value >= 60) {
+                            edtMin.setText("0");
+                            toast("60이상 입력하실 수 없습니다.");
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                edtSecond.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (edtSecond.getText().toString().equals("")) return;
+                        int value = Integer.parseInt(edtSecond.getText().toString());
+                        if (value < 0 || value >= 60) {
+                            edtSecond.setText("0");
+                            toast("60이상 입력하실 수 없습니다.");
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
