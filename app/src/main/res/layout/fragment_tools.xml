@@ -5,31 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/txtInfo"
-            android:text="진행 중인 이벤트가 없습니다."
-            android:textColor="#000000"
-            android:gravity="center|top"
-            android:layout_marginTop="50dp"
-            android:textSize="18sp"/>
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listEvent"
-            android:visibility="gone"
-            android:divider="#00000000"/>
-    </FrameLayout>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/rgEvent"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
         <RadioButton
             android:layout_width="0dp"
@@ -57,4 +37,36 @@
             android:layout_marginLeft="5dp"
             android:background="@drawable/checkcustom"/>
     </RadioGroup>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/txtInfo"
+            android:text="진행 중인 이벤트가 없습니다."
+            android:textColor="#000000"
+            android:gravity="center|top"
+            android:paddingTop="50dp"
+            android:textSize="18sp"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listEvent"
+            android:visibility="gone"
+            android:dividerHeight="10dp"
+            android:divider="#00000000"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="6dp"
+            android:backgroundTint="#FE6E0E"
+            app:borderWidth="0dp"
+            android:layout_marginBottom="90dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+    </FrameLayout>
 </LinearLayout>
