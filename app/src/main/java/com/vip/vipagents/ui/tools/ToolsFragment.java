@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -63,6 +64,15 @@ public class ToolsFragment extends Fragment {
         events = new ArrayList<Event>();
         eventAdapter = new EventAdapter(getActivity(), events);
         listEvent.setAdapter(eventAdapter);
+
+        listEvent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), EventActivity.class);
+                intent.putExtra("Event", events.get(position));
+                startActivity(intent);
+            }
+        });
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,8 +137,9 @@ public class ToolsFragment extends Fragment {
                     int limit = Integer.parseInt(data.child("limit").getValue().toString());
                     int number = Integer.parseInt(data.child("number").getValue().toString());
                     String start = data.child("start").getValue().toString();
+                    int play = Integer.parseInt(data.child("play").getValue().toString());
 
-                    Event event = new Event(number, title, date, start, end, content, limit);
+                    Event event = new Event(number, title, date, start, end, content, limit, play);
                     events.add(event);
                 }
                 if (!events.isEmpty()) {

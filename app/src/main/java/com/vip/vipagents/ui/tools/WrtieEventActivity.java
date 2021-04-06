@@ -354,7 +354,7 @@ public class WrtieEventActivity extends AppCompatActivity {
                         else limit = 10000;
                         String date = format.format(time);
 
-                        Event event = new Event(number, title, date, start_date, end_date, content, limit);
+                        Event event = new Event(number, title, date, start_date, end_date, content, limit, 0);
                         mReference.child("ev"+number).setValue(event);
                         if (photoURI != null) uploadFireStorage("event"+number);
                         toast("이벤트 게시물을 게시했습니다.");

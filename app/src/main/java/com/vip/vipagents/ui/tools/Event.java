@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class Event implements Serializable {
     private String title, date, start, end, content;
-    private int number, limit;
+    private int number, limit, play;
 
-    public Event(int number, String title, String date, String start, String end, String content, int limit) {
+    public Event(int number, String title, String date, String start, String end, String content, int limit, int play) {
         this.number = number;
         this.title = title;
         this.date = date;
@@ -14,6 +14,7 @@ public class Event implements Serializable {
         this.end = end;
         this.content = content;
         this.limit = limit;
+        this.play = play;
     }
 
     public String getTitle() {
@@ -70,5 +71,13 @@ public class Event implements Serializable {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    public int getPlay() {
+        return play;
+    }
+
+    public void setPlay(int play) {
+        this.play = play;
     }
 }
