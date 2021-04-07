@@ -38,9 +38,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(jpg 사진만 허용됩니다.)"
+            android:text="(업로드한 사진은 이후 수정이 불가능합니다.)"
             android:textSize="15sp"
-            android:textColor="#FF6666"/>
+            android:textColor="#FF4444"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

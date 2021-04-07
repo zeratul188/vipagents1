@@ -39,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WrtieEventActivity extends AppCompatActivity {
     private EditText edtTitle, edtLimit, edtContent;
@@ -50,7 +52,9 @@ public class WrtieEventActivity extends AppCompatActivity {
 
     private Bitmap image_bitmap = null;
     private Uri photoURI = null;
-    private int number = 0;
+    private int number = 0, edit_number = 99999999;
+    private boolean isEdit = false;
+    private Event event = null;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -79,6 +83,34 @@ public class WrtieEventActivity extends AppCompatActivity {
         storageRef = storage.getReference();
         mDatabase = FirebaseDatabase.getInstance();
 
+        Intent intent = getIntent();
+        isEdit = intent.getBooleanExtra("isEdit", false);
+        if (isEdit) {
+            event = (Event)intent.getSerializableExtra("Edit_Event");
+            if (event != null) {
+                edtTitle.setText(event.getTitle());
+                edtContent.setText(event.getContent());
+                btnImage.setEnabled(false);
+                btnStart.setText(event.getStart());
+                btnEnd.setText(event.getEnd());
+                if (event.getLimit() >= 10000) {
+                    chkInfinity.setChecked(true);
+                    edtLimit.setEnabled(false);
+                }
+                else {
+                    chkInfinity.setChecked(false);
+                    edtLimit.setText(Integer.toString(event.getLimit()));
+                }
+                edit_number = event.getNumber();
+            }
+        } else {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
+            Date time = new Date();
+            String now = format.format(time);
+            btnStart.setText(now);
+            btnEnd.setText(now);
+        }
+
         chkInfinity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -98,12 +130,6 @@ public class WrtieEventActivity extends AppCompatActivity {
                 startActivityForResult(intent, FROM_ALBUM);
             }
         });
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
-        Date time = new Date();
-        String now = format.format(time);
-        btnStart.setText(now);
-        btnEnd.setText(now);
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,13 +363,37 @@ public class WrtieEventActivity extends AppCompatActivity {
                 mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
+                        Date time = new Date();
+
+                        if (isEdit) {
+                            String title = edtTitle.getText().toString();
+                            String content = edtContent.getText().toString();
+                            String start_date = btnStart.getText().toString();
+                            String end_date = btnEnd.getText().toString();
+                            int limit;
+                            if (!chkInfinity.isChecked()) limit = Integer.parseInt(edtLimit.getText().toString());
+                            else limit = 10000;
+                            String date = format.format(time);
+
+                            Map<String, Object> taskMap = new HashMap<String, Object>();
+                            taskMap.put("title", title);
+                            taskMap.put("content", content);
+                            taskMap.put("start", start_date);
+                            taskMap.put("end", end_date);
+                            taskMap.put("limit", limit);
+                            taskMap.put("date", date);
+
+                            mReference.child("ev"+edit_number).updateChildren(taskMap);
+                            toast("게시물을 수정하였습니다.");
+                            finish();
+                            return;
+                        }
+
                         for (DataSnapshot data : snapshot.getChildren()) {
                             if (Integer.parseInt(data.child("number").getValue().toString()) > number) number = Integer.parseInt(data.child("number").getValue().toString());
                         }
                         number++;
-
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
-                        Date time = new Date();
 
                         String title = edtTitle.getText().toString();
                         String content = edtContent.getText().toString();

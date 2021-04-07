@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.vip.vipagents.ui.tools.EventActivity">
     <item
+        android:id="@+id/action_member"
+        android:orderInCategory="100"
+        android:title="이벤트 참여 인원"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_edit"
         android:orderInCategory="100"
         android:title="수정"
@@ -12,4 +17,5 @@
         android:orderInCategory="100"
         android:title="삭제"
         app:showAsAction="never" />
+
 </menu>
