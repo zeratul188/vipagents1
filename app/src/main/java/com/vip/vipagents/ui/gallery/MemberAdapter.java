@@ -65,8 +65,11 @@ public class MemberAdapter extends BaseAdapter {
         }
         if (!members.get(position).isClan()) {
             imgGrade.setVisibility(View.GONE);
-            txtGrade.setText("클랜 없음");
-        } else imgGrade.setVisibility(View.VISIBLE);
+            txtGrade.setVisibility(View.GONE);
+        } else {
+            imgGrade.setVisibility(View.VISIBLE);
+            txtGrade.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }

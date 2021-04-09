@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,10 +57,12 @@ public class EventAdapter extends BaseAdapter {
         final TextView txtTitle = convertView.findViewById(R.id.txtTitle);
         final TextView txtStartDate = convertView.findViewById(R.id.txtStartDate);
         final TextView txtEndDate = convertView.findViewById(R.id.txtEndDate);
+        final FrameLayout layoutMain = convertView.findViewById(R.id.layoutMain);
 
         txtTitle.setText(events.get(position).getTitle());
         txtStartDate.setText(events.get(position).getStart());
         txtEndDate.setText(events.get(position).getEnd());
+        layoutMain.setClipToOutline(true);
 
         storageRef.child("Events/event"+events.get(position).getNumber()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

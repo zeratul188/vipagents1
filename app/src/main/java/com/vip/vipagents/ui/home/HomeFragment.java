@@ -9,10 +9,13 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vip.vipagents.R;
 import com.vip.vipagents.ui.share.Notice;
 import com.vip.vipagents.ui.share.NoticeActivity;
+import com.vip.vipagents.ui.tools.Event;
 
 import java.util.ArrayList;
 
@@ -30,38 +34,35 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference, darkReference, ironhorseReference;
+    private DatabaseReference mReference, darkReference, ironhorseReference, eventReference;
 
     private ArrayList<Notice> notices;
+    private ArrayList<Event> events;
     private MainNoticeAdapter noticeAdapter;
-    private ArrayList<Temp_Member> members;
-    private TempMemberAdapter memberAdapter;
 
-    private ListView listNotice, listMember;
-    private TextView txtNotice, txtAll, txtMemberInfo, txtDark, txtIronHorse;
-    private FrameLayout layoutNotice;
+    private ListView listNotice;
+    private TextView txtNotice, txtAll, txtDark, txtIronHorse, txtEvent;
+    private FrameLayout layoutNotice, layoutDark, layoutIronHorse;
+    private RecyclerView listEvent;
+    private EventListAdapter eventAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        /*final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
 
         listNotice = root.findViewById(R.id.listNotice);
         txtNotice = root.findViewById(R.id.txtNotice);
         layoutNotice = root.findViewById(R.id.layoutNotice);
-        listMember = root.findViewById(R.id.listMember);
         txtAll = root.findViewById(R.id.txtAll);
-        txtMemberInfo = root.findViewById(R.id.txtMemberInfo);
         txtDark = root.findViewById(R.id.txtDark);
         txtIronHorse = root.findViewById(R.id.txtIronHorse);
+        layoutDark = root.findViewById(R.id.layoutDark);
+        layoutIronHorse = root.findViewById(R.id.layoutIronHorse);
+
+        layoutDark.setClipToOutline(true);
+        layoutIronHorse.setClipToOutline(true);
 
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -77,9 +78,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        members = new ArrayList<Temp_Member>();
-        memberAdapter = new TempMemberAdapter(getActivity(), members);
-        listMember.setAdapter(memberAdapter);
+        listEvent = root.findViewById(R.id.listEvent);
+        txtEvent = root.findViewById(R.id.txtEvent);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        listEvent.setLayoutManager(layoutManager);
+        events = new ArrayList<Event>();
+        eventAdapter = new EventListAdapter(events, getActivity());
+        listEvent.setAdapter(eventAdapter);
+        EventDecoration decoration = new EventDecoration();
+        listEvent.addItemDecoration(decoration);
 
         return root;
     }
@@ -87,30 +94,32 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mReference = mDatabase.getReference("Members");
-        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        eventReference = mDatabase.getReference("Contents/Events");
+        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getChildrenCount() > 0) {
-                    txtMemberInfo.setVisibility(View.GONE);
-                    listMember.setVisibility(View.VISIBLE);
+                    txtEvent.setVisibility(View.GONE);
+                    listEvent.setVisibility(View.VISIBLE);
                 } else {
-                    txtMemberInfo.setVisibility(View.VISIBLE);
-                    listMember.setVisibility(View.GONE);
+                    txtEvent.setVisibility(View.VISIBLE);
+                    listEvent.setVisibility(View.GONE);
                 }
-                int max = 10, now = 0, all = 0;
-                members.clear();
+                events.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
-                    if (now < max) {
-                        Temp_Member member = new Temp_Member(data.child("id").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()),
-                                Boolean.parseBoolean(data.child("clan").getValue().toString()));
-                        members.add(member);
-                    }
-                    if (Boolean.parseBoolean(data.child("clan").getValue().toString())) all++;
-                    now++;
+                    String title = data.child("title").getValue().toString();
+                    String date = data.child("date").getValue().toString();
+                    String start = data.child("start").getValue().toString();
+                    String end = data.child("end").getValue().toString();
+                    String content = data.child("content").getValue().toString();
+                    int number = Integer.parseInt(data.child("number").getValue().toString());
+                    int limit = Integer.parseInt(data.child("limit").getValue().toString());
+                    int play = Integer.parseInt(data.child("play").getValue().toString());
+
+                    Event event = new Event(number, title, date, start, end, content, limit, play);
+                    events.add(event);
                 }
-                txtAll.setText(Integer.toString(all));
-                memberAdapter.notifyDataSetChanged();
+                eventAdapter.notifyDataSetChanged();
             }
 
             @Override
