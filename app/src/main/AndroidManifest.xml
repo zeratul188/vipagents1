@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.slideshow.RandomTowerActivity"></activity>
         <activity
             android:name=".ui.tools.EventActivity"
             android:label="@string/title_activity_event"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.tools.WrtieEventActivity" />
         <activity android:name=".ui.slideshow.MissionActivity" />
         <activity android:name=".EditPasswordActivity" />

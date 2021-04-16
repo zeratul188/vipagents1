@@ -21,7 +21,7 @@ public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
 
-    private LinearLayout layoutTimeAttack;
+    private LinearLayout layoutTimeAttack, layoutPoker, layoutRandomTower;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,12 +30,28 @@ public class SlideshowFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
 
         layoutTimeAttack = root.findViewById(R.id.layoutTimeAttack);
+        layoutPoker = root.findViewById(R.id.layoutPoker);
+        layoutRandomTower = root.findViewById(R.id.layoutRandomTower);
 
         layoutTimeAttack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MissionActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        layoutRandomTower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        layoutPoker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
