@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RandomTowerActivity extends AppCompatActivity {
-    private TextView txtMoney, txtLegend, txtElite, txtEpic, txtRare, txtNormal;
+    private TextView txtMoney, txtLegend, txtElite, txtEpic, txtRare, txtNormal, txtDemage;
     private Button btnReset, btnAdd;
     private CheckBox chkEdit;
     private Button[][] btnBox = new Button[6][5];
@@ -63,6 +63,7 @@ public class RandomTowerActivity extends AppCompatActivity {
         btnReset = findViewById(R.id.btnReset);
         chkEdit = findViewById(R.id.chkEdit);
         btnAdd = findViewById(R.id.btnAdd);
+        txtDemage = findViewById(R.id.txtDemage);
 
         txtMoney.setText(Integer.toString(money));
 
@@ -306,6 +307,9 @@ public class RandomTowerActivity extends AppCompatActivity {
                 txtElite.setText(Integer.toString(elite));
                 txtLegend.setText(Integer.toString(legend));
                 txtMoney.setText(Integer.toString(money));
+
+                int result = (normal*20) + (rare*50) + (epic*150) + (elite*400) + (legend*1000);
+                txtDemage.setText(Integer.toString(result));
             }
 
             @Override
