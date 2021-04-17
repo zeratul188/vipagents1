@@ -44,7 +44,8 @@ public class SlideshowFragment extends Fragment {
         layoutRandomTower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), RandomTowerActivity.class);
+                startActivity(intent);
             }
         });
 

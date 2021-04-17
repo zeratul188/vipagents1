@@ -371,6 +371,6 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-        return "/*null*/";
+        return "null";
     }
 }
