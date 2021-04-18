@@ -1,13 +1,18 @@
 package com.vip.vipagents.ui.slideshow;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +21,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vip.vipagents.MainActivity;
 import com.vip.vipagents.R;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +47,8 @@ public class RandomTowerActivity extends AppCompatActivity {
     private DatabaseReference mReference;
     private SimpleDateFormat format = null;
     private Date time = null;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,69 @@ public class RandomTowerActivity extends AppCompatActivity {
                 taskMap.put("money", money);
                 mReference.updateChildren(taskMap);
                 txtMoney.setText(Integer.toString(money));
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
+
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+
+                txtView.setText("랜덤 타워들이 모두 삭제되고 골드는 500으로 초기화됩니다.");
+                btnOK.setText("초기화");
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String now = format.format(time);
+                        money = 500;
+                        txtMoney.setText(Integer.toString(money));
+                        Map<String, Object> taskMap = new HashMap<String, Object>();
+                        taskMap.put("date", now);
+                        taskMap.put("money", money);
+                        mReference.updateChildren(taskMap);
+                        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if (data.getKey().equals("date") || data.getKey().equals("money")) continue;
+                                    for (int i = 0; i < btnBox.length; i++) {
+                                        for (int j = 0; j < btnBox[i].length; j++) {
+                                            if (data.getKey().equals(Integer.toString(i)+Integer.toString(j))) {
+                                                mReference.child(Integer.toString(i)+Integer.toString(j)).removeValue();
+                                            }
+                                        }
+                                    }
+                                }
+                                loadData();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        alertDialog.dismiss();
+                    }
+                });
+                builder = new AlertDialog.Builder(RandomTowerActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
             }
         });
 
@@ -308,7 +381,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                 txtLegend.setText(Integer.toString(legend));
                 txtMoney.setText(Integer.toString(money));
 
-                int result = (normal*20) + (rare*50) + (epic*150) + (elite*400) + (legend*1000);
+                int result = (normal*75) + (rare*225) + (epic*675) + (elite*2025) + (legend*6075);
                 txtDemage.setText(Integer.toString(result));
             }
 
@@ -378,12 +451,87 @@ public class RandomTowerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tower, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
             }
+            case R.id.action_tower:
+                View view = getLayoutInflater().inflate(R.layout.towermembersdialog, null);
+
+                final ListView listView = view.findViewById(R.id.listView);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+
+                final ArrayList<MemberTower> towers = new ArrayList<MemberTower>();
+                final TowerMemberAdapter tma = new TowerMemberAdapter(RandomTowerActivity.this, towers, loadProfile());
+                listView.setAdapter(tma);
+
+                DatabaseReference memberRef = mDatabase.getReference("Members");
+                memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            int normal = 0, rare = 0, epic = 0, elite = 0, legend = 0;
+                            for (DataSnapshot data2 : data.child("Tower").getChildren()) {
+                                if (data2.getKey().equals("date") || data2.getKey().equals("money")) continue;
+                                for (DataSnapshot data3 : data2.getChildren()) {
+                                    if (data3.getKey().equals("grade")) {
+                                        switch (Integer.parseInt(data3.getValue().toString())) {
+                                            case 1:
+                                                normal++;
+                                                break;
+                                            case 2:
+                                                rare++;
+                                                break;
+                                            case 3:
+                                                epic++;
+                                                break;
+                                            case 4:
+                                                elite++;
+                                                break;
+                                            case 5:
+                                                legend++;
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (normal != 0 || rare != 0 || epic != 0 || elite != 0 || legend != 0) {
+                                MemberTower mt = new MemberTower(data.child("id").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), normal, rare, epic, elite, legend);
+                                towers.add(mt);
+                            }
+                        }
+                        Collections.sort(towers);
+                        tma.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                builder = new AlertDialog.Builder(RandomTowerActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

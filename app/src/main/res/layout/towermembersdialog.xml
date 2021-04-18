@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical" android:background="@drawable/layoutroundcustom"
+    android:padding="16dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="랜덤 타워 맴버별 상황"
+        android:textSize="15sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#444444"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:id="@+id/listView"
+        android:layout_marginBottom="20dp"
+        android:listSelector="#00000000"
+        android:dividerHeight="5dp"
+        android:divider="#00000000"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/btnOK"
+            android:background="@drawable/buttonsubcustom"
+            android:text="확인"
+            android:textSize="15sp"
+            style="?android:attr/borderlessButtonStyle"/>
+    </LinearLayout>
+
+</LinearLayout>
