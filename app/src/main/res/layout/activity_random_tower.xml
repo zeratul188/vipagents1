@@ -337,440 +337,350 @@
         android:layout_weight="1">
         <TableRow
             android:layout_marginBottom="5dp">
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox11"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox12"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox13"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox14"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox15"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
         <TableRow
             android:layout_marginBottom="5dp">
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox21"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox22"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox23"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox24"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox25"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
         <TableRow
             android:layout_marginBottom="5dp">
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox31"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox32"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox33"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox34"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox35"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
         <TableRow
             android:layout_marginBottom="5dp">
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox41"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox42"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox43"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox44"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox45"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
         <TableRow
             android:layout_marginBottom="5dp">
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox51"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox52"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox53"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox54"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox55"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
         <TableRow>
-            <Button
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox61"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox62"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox63"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox64"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
-            <Button
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
+            <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="70dp"
                 android:layout_marginRight="5dp"
                 android:id="@+id/btnBox65"
-                style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/towercustom"
-                android:paddingTop="2dp"
-                android:paddingLeft="1dp"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="19dp"
+                android:paddingBottom="17dp"/>
         </TableRow>
     </TableLayout>
 </LinearLayout>

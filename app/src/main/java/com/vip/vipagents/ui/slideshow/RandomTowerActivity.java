@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,7 @@ public class RandomTowerActivity extends AppCompatActivity {
     private TextView txtMoney, txtLegend, txtElite, txtEpic, txtRare, txtNormal, txtDemage;
     private Button btnReset, btnAdd;
     private CheckBox chkEdit;
-    private Button[][] btnBox = new Button[6][5];
+    private ImageView[][] btnBox = new ImageView[6][5];
 
     private Tower[][] towers = new Tower[6][5];
     private int money = 0;
@@ -50,6 +52,9 @@ public class RandomTowerActivity extends AppCompatActivity {
     private AlertDialog.Builder builder = null;
     private AlertDialog alertDialog = null;
 
+    private int[] imageResource = {R.drawable.blacktuskcustom, R.drawable.hyenascustom, R.drawable.truesonscustom, R.drawable.rikercustom, R.drawable.cleanerscustom, R.drawable.outcastcustom, R.drawable.firebirdcustom, R.drawable.darkzonecustom};
+    private Drawable[] drawables = new Drawable[8];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,10 @@ public class RandomTowerActivity extends AppCompatActivity {
         format = new SimpleDateFormat("yyyy년 MM월 dd일");
         time = new Date();
         now_date = format.format(time);
+
+        for (int i = 0; i < drawables.length; i++) {
+            drawables[i] = getResources().getDrawable(imageResource[i]);
+        }
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("Members/"+loadProfile()+"/Tower");
@@ -76,6 +85,13 @@ public class RandomTowerActivity extends AppCompatActivity {
         txtDemage = findViewById(R.id.txtDemage);
 
         txtMoney.setText(Integer.toString(money));
+
+        if (!checkLogin()) {
+            toast("로그인 후 이용해주시기 바랍니다.");
+            btnReset.setEnabled(false);
+            btnAdd.setEnabled(false);
+            chkEdit.setEnabled(false);
+        }
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,12 +182,12 @@ public class RandomTowerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (chkEdit.isChecked()) {
-                            if (btnBox[x][y].getText().toString().equals("")) return;
+                            if (btnBox[x][y].getDrawable() == null) return;
                             sell(x, y);
                             toast("타워를 팔았습니다.");
                             return;
                         }
-                        if (btnBox[x][y].getText().toString().equals("")) {
+                        if (btnBox[x][y].getDrawable() == null) {
                             if (money < 100) {
                                 toast("골드가 부족합니다.");
                                 return;
@@ -344,34 +360,39 @@ public class RandomTowerActivity extends AppCompatActivity {
                             break;
                     }
                 }
+                int left = (int)(getResources().getDimension(R.dimen.image_left_top));
+                int top = (int)(getResources().getDimension(R.dimen.image_left_top));
+                int right = (int)(getResources().getDimension(R.dimen.image_right));
+                int bottom = (int)(getResources().getDimension(R.dimen.image_bottom));
                 for (int i = 0; i < btnBox.length; i++) {
                     for (int j = 0; j < btnBox[i].length; j++) {
                         switch (towers[i][j].getGrade()) {
                             case 0:
                                 btnBox[i][j].setBackgroundResource(R.drawable.towercustom);
-                                btnBox[i][j].setText("");
+                                btnBox[i][j].setImageDrawable(null);
                                 break;
                             case 1:
                                 btnBox[i][j].setBackgroundResource(R.drawable.normaltower);
-                                btnBox[i][j].setText(Integer.toString(towers[i][j].getType()));
+                                btnBox[i][j].setImageDrawable(drawables[towers[i][j].getType()-1]);
                                 break;
                             case 2:
                                 btnBox[i][j].setBackgroundResource(R.drawable.raretower);
-                                btnBox[i][j].setText(Integer.toString(towers[i][j].getType()));
+                                btnBox[i][j].setImageDrawable(drawables[towers[i][j].getType()-1]);
                                 break;
                             case 3:
                                 btnBox[i][j].setBackgroundResource(R.drawable.epictower);
-                                btnBox[i][j].setText(Integer.toString(towers[i][j].getType()));
+                                btnBox[i][j].setImageDrawable(drawables[towers[i][j].getType()-1]);
                                 break;
                             case 4:
                                 btnBox[i][j].setBackgroundResource(R.drawable.elitetower);
-                                btnBox[i][j].setText(Integer.toString(towers[i][j].getType()));
+                                btnBox[i][j].setImageDrawable(drawables[towers[i][j].getType()-1]);
                                 break;
                             case 5:
                                 btnBox[i][j].setBackgroundResource(R.drawable.legendtower);
-                                btnBox[i][j].setText(Integer.toString(towers[i][j].getType()));
+                                btnBox[i][j].setImageDrawable(drawables[towers[i][j].getType()-1]);
                                 break;
                         }
+                        btnBox[i][j].setPadding(left, top, right, bottom);
                     }
                 }
                 txtNormal.setText(Integer.toString(normal));
