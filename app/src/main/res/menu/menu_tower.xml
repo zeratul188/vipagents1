@@ -7,5 +7,10 @@
         android:orderInCategory="100"
         android:title="맴버 랜덤 타워 현황"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_developer"
+        android:orderInCategory="100"
+        android:title="테스트 모드 켜기/끄기"
+        app:showAsAction="never" />
 
 </menu>

@@ -8,11 +8,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.vip.vipagents.MainActivity;
 import com.vip.vipagents.R;
 
 import java.io.FileInputStream;
@@ -44,6 +46,7 @@ public class RandomTowerActivity extends AppCompatActivity {
     private Tower[][] towers = new Tower[6][5];
     private int money = 0;
     private String now_date;
+    private boolean isDeveloper = false;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -100,7 +103,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                     toast("로그인 후 이용해주십시오.");
                     return;
                 }
-                money += 50;
+                money += 300;
                 Map<String, Object> taskMap = new HashMap<String, Object>();
                 taskMap.put("money", money);
                 mReference.updateChildren(taskMap);
@@ -323,6 +326,7 @@ public class RandomTowerActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int normal = 0, rare = 0, epic = 0, elite = 0, legend = 0;
+                int bonus = 0;
                 for (int i = 0; i < btnBox.length; i++) {
                     for (int j = 0; j < btnBox[i].length; j++) {
                         towers[i][j].reset();
@@ -345,18 +349,28 @@ public class RandomTowerActivity extends AppCompatActivity {
                     switch (grade) {
                         case 1:
                             normal++;
+                            if (type == 7) bonus += 23;
+                            else if (type == 8) bonus += 8;
                             break;
                         case 2:
                             rare++;
+                            if (type == 7) bonus += 68;
+                            else if (type == 8) bonus += 23;
                             break;
                         case 3:
                             epic++;
+                            if (type == 7) bonus += 203;
+                            else if (type == 8) bonus += 68;
                             break;
                         case 4:
                             elite++;
+                            if (type == 7) bonus += 608;
+                            else if (type == 8) bonus += 203;
                             break;
                         case 5:
                             legend++;
+                            if (type == 7) bonus += 1823;
+                            else if (type == 8) bonus += 608;
                             break;
                     }
                 }
@@ -403,6 +417,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                 txtMoney.setText(Integer.toString(money));
 
                 int result = (normal*75) + (rare*225) + (epic*675) + (elite*2025) + (legend*6075);
+                result += bonus;
                 txtDemage.setText(Integer.toString(result));
             }
 
@@ -479,16 +494,68 @@ public class RandomTowerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Button btnOK = null;
+        View view = null;
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
             }
+            case R.id.action_developer:
+                if (isDeveloper) {
+                    isDeveloper = false;
+                    btnAdd.setVisibility(View.GONE);
+                    toast("테스트 모드를 비활성화하였습니다.");
+                    return true;
+                }
+
+                view = getLayoutInflater().inflate(R.layout.editdialog, null);
+
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final EditText edtText = view.findViewById(R.id.edtText);
+                btnOK = view.findViewById(R.id.btnOK);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+
+                txtView.setText("관리자 비밀번호를 입력하십시오.");
+                edtText.setHint("관리자 비밀번호");
+                edtText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                edtText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (edtText.getText().toString().equals("")) {
+                            toast("비밀번호를 입력하십시오.");
+                            return;
+                        } else if (edtText.getText().toString().equals("division123")) {
+                            isDeveloper = true;
+                            btnAdd.setVisibility(View.VISIBLE);
+                            toast("테스트 모드를 활성화하였습니다.");
+                            alertDialog.dismiss();
+                        } else toast("비밀번호가 일치하지 않습니다.");
+                    }
+                });
+
+                builder = new AlertDialog.Builder(RandomTowerActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+                return true;
             case R.id.action_tower:
-                View view = getLayoutInflater().inflate(R.layout.towermembersdialog, null);
+                view = getLayoutInflater().inflate(R.layout.towermembersdialog, null);
 
                 final ListView listView = view.findViewById(R.id.listView);
-                final Button btnOK = view.findViewById(R.id.btnOK);
+                btnOK = view.findViewById(R.id.btnOK);
 
                 final ArrayList<MemberTower> towers = new ArrayList<MemberTower>();
                 final TowerMemberAdapter tma = new TowerMemberAdapter(RandomTowerActivity.this, towers, loadProfile());
@@ -499,33 +566,79 @@ public class RandomTowerActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot data : snapshot.getChildren()) {
-                            int normal = 0, rare = 0, epic = 0, elite = 0, legend = 0;
+                            int normal = 0, rare = 0, epic = 0, elite = 0, legend = 0, bonus = 0;
                             for (DataSnapshot data2 : data.child("Tower").getChildren()) {
                                 if (data2.getKey().equals("date") || data2.getKey().equals("money")) continue;
+                                int type = 0, grade = 0;
                                 for (DataSnapshot data3 : data2.getChildren()) {
                                     if (data3.getKey().equals("grade")) {
                                         switch (Integer.parseInt(data3.getValue().toString())) {
                                             case 1:
                                                 normal++;
+                                                grade = 1;
                                                 break;
                                             case 2:
                                                 rare++;
+                                                grade = 2;
                                                 break;
                                             case 3:
                                                 epic++;
+                                                grade = 3;
                                                 break;
                                             case 4:
                                                 elite++;
+                                                grade = 4;
                                                 break;
                                             case 5:
                                                 legend++;
+                                                grade = 5;
                                                 break;
                                         }
+                                    } else if (data3.getKey().equals("type")) {
+                                        type = Integer.parseInt(data3.getValue().toString());
+                                    }
+                                }
+                                if (type == 7) {
+                                    switch (grade) {
+                                        case 1:
+                                            bonus += 23;
+                                            break;
+                                        case 2:
+                                            bonus += 68;
+                                            break;
+                                        case 3:
+                                            bonus += 203;
+                                            break;
+                                        case 4:
+                                            bonus += 608;
+                                            break;
+                                        case 5:
+                                            bonus += 1823;
+                                            break;
+                                    }
+                                } else if (type == 8) {
+                                    switch (grade) {
+                                        case 1:
+                                            bonus += 8;
+                                            break;
+                                        case 2:
+                                            bonus += 23;
+                                            break;
+                                        case 3:
+                                            bonus += 68;
+                                            break;
+                                        case 4:
+                                            bonus += 203;
+                                            break;
+                                        case 5:
+                                            bonus += 608;
+                                            break;
                                     }
                                 }
                             }
                             if (normal != 0 || rare != 0 || epic != 0 || elite != 0 || legend != 0) {
                                 MemberTower mt = new MemberTower(data.child("id").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), normal, rare, epic, elite, legend);
+                                mt.addBonus(bonus);
                                 towers.add(mt);
                             }
                         }

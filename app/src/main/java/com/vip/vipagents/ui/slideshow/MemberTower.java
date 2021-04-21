@@ -1,7 +1,5 @@
 package com.vip.vipagents.ui.slideshow;
 
-import com.vip.vipagents.Member;
-
 import java.io.Serializable;
 
 public class MemberTower implements Serializable, Comparable<MemberTower> {
@@ -17,6 +15,10 @@ public class MemberTower implements Serializable, Comparable<MemberTower> {
         this.elite = elite;
         this.legend = legend;
         demage = (normal*75) + (rare*225) + (epic*675) + (elite*2025) + (legend*6075);
+    }
+
+    public void addBonus(int bonus) {
+        demage += bonus;
     }
 
     public int getDemage() {
