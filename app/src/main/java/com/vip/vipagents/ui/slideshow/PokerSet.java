@@ -21,6 +21,10 @@ public class PokerSet extends IfPoker {
         return new PokerResult(score[position], name[position]);
     }
 
+    public int getSize() {
+        return name.length;
+    }
+
     public PokerResult checkOption(Poker[] pokers) {
         if (isRoyalStraightFlush(pokers)) return outResult(9);
         else if (isFiveFlush(pokers)) return outResult(15);

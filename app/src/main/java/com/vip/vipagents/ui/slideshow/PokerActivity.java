@@ -1,13 +1,20 @@
 package com.vip.vipagents.ui.slideshow;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +41,7 @@ public class PokerActivity extends AppCompatActivity {
     private Button btnAdd, btnOK, btnReset;
     private TextView[] txtCard = new TextView[5];
     private ImageView[] imgChange = new ImageView[5];
-    private ListView listView;
+    private ListView listView, listType;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -42,9 +50,13 @@ public class PokerActivity extends AppCompatActivity {
     private Date time = null;
     private ArrayList<PokerResult> pokerResults;
     private PokerAdapter pokerAdapter;
+    private ArrayList<PokerType> pokerTypes;
+    private PokerTypeAdatper pokerTypeAdatper;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     private int ticket = 0, number = 0, demage = 0;
-    private boolean isStart = false;
+    private boolean isStart = false, isDeveloper = false;
     private Poker[] pokers = new Poker[5];
 
     private String[] contents = {"7", "8", "9", "10", "J", "Q", "K", "A"};
@@ -69,6 +81,7 @@ public class PokerActivity extends AppCompatActivity {
         btnOK = findViewById(R.id.btnOK);
         btnReset = findViewById(R.id.btnReset);
         listView = findViewById(R.id.listView);
+        listType = findViewById(R.id.listType);
 
         int resource;
         for (int i = 0; i < txtCard.length; i++) {
@@ -103,8 +116,19 @@ public class PokerActivity extends AppCompatActivity {
         pokerAdapter = new PokerAdapter(PokerActivity.this, pokerResults);
         listView.setAdapter(pokerAdapter);
 
-        createProfile();
-        loadData();
+        pokerTypes = new ArrayList<PokerType>();
+        pokerTypeAdatper = new PokerTypeAdatper(PokerActivity.this, pokerTypes);
+        listType.setAdapter(pokerTypeAdatper);
+
+        if (!checkLogin()) {
+            toast("로그인 후 이용해주시기 바랍니다.");
+            btnReset.setEnabled(false);
+            btnAdd.setEnabled(false);
+            btnOK.setEnabled(false);
+        } else {
+            createProfile();
+            loadData();
+        }
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,28 +173,58 @@ public class PokerActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ticket = 2;
-                Map<String, Object> taskMap = new HashMap<String, Object>();
-                taskMap.put("date", format.format(time));
-                taskMap.put("pokers", 0);
-                taskMap.put("ticket", 2);
-                mReference.updateChildren(taskMap);
-                mReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
-                            mReference.child(data.getKey()).removeValue();
-                        }
-                        toast("초기화하였습니다.");
-                        loadData();
-                    }
+                View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
 
+                txtView.setText("포커들이 모두 초기화되고 티켓은 2개만 지급됩니다.");
+                btnOK.setText("초기화");
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
                     }
                 });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        ticket = 2;
+                        Map<String, Object> taskMap = new HashMap<String, Object>();
+                        taskMap.put("date", format.format(time));
+                        taskMap.put("pokers", 0);
+                        taskMap.put("ticket", 2);
+                        mReference.updateChildren(taskMap);
+                        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
+                                    mReference.child(data.getKey()).removeValue();
+                                }
+                                toast("초기화하였습니다.");
+                                loadData();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
+
+                builder = new AlertDialog.Builder(PokerActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
             }
         });
 
@@ -249,6 +303,7 @@ public class PokerActivity extends AppCompatActivity {
     }
 
     private void loadData() {
+        if (!checkLogin()) return;
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -304,6 +359,8 @@ public class PokerActivity extends AppCompatActivity {
                     pokerResults.add(pokerResult);
                 }
                 txtDemage.setText(Integer.toString(demage));
+                Collections.sort(pokerResults);
+                //Collections.reverse(pokerResults);
                 pokerAdapter.notifyDataSetChanged();
             }
 
@@ -313,6 +370,33 @@ public class PokerActivity extends AppCompatActivity {
             }
         });
 
+        pokerTypes.clear();
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (int i = 0; i < pokerSet.getSize(); i++) {
+                    int count = 0;
+                    for (DataSnapshot data : snapshot.getChildren()) {
+                        if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
+                        for (DataSnapshot data2 : data.getChildren()) {
+                            if (data2.getKey().equals("name")) {
+                                if (data2.getValue().toString().equals(pokerSet.getName(i))) {
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    PokerType pokerType = new PokerType(pokerSet.getName(i), count);
+                    pokerTypes.add(pokerType);
+                }
+                pokerTypeAdatper.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -338,14 +422,79 @@ public class PokerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_poker, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
             }
+            case R.id.action_developer:
+                if (!checkLogin()) {
+                    toast("로그인 후 이용해주시기 바랍니다.");
+                    return true;
+                }
+                if (isDeveloper) {
+                    isDeveloper = false;
+                    btnAdd.setVisibility(View.GONE);
+                    toast("테스트 모드를 비활성화하였습니다.");
+                    return true;
+                }
+
+                View view = getLayoutInflater().inflate(R.layout.editdialog, null);
+
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final EditText edtText = view.findViewById(R.id.edtText);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+
+                txtView.setText("관리자 비밀번호를 입력하십시오.");
+                edtText.setHint("관리자 비밀번호");
+                edtText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                edtText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (edtText.getText().toString().equals("")) {
+                            toast("비밀번호를 입력하십시오.");
+                            return;
+                        } else if (edtText.getText().toString().equals("division123")) {
+                            isDeveloper = true;
+                            btnAdd.setVisibility(View.VISIBLE);
+                            toast("테스트 모드를 활성화하였습니다.");
+                            alertDialog.dismiss();
+                        } else toast("비밀번호가 일치하지 않습니다.");
+                    }
+                });
+
+                builder = new AlertDialog.Builder(PokerActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean checkLogin() {
+        if (loadProfile().equals("null") || loadProfile() == null) return false;
+        else return true;
     }
 
     private void toast(String message) {
