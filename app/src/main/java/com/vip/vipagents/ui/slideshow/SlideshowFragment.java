@@ -52,7 +52,8 @@ public class SlideshowFragment extends Fragment {
         layoutPoker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), PokerActivity.class);
+                startActivity(intent);
             }
         });
 
