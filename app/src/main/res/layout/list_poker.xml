@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="5dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtContent"
+        android:text="Poker Type"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:layout_marginRight="7dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtScore"
+        android:text="(+score)"
+        android:textSize="15sp"
+        android:textColor="#777777"/>
+</LinearLayout>

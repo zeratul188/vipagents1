@@ -259,6 +259,9 @@ public class IfPoker {
         boolean isSave = false;
         ArrayList<String> list = new ArrayList<String>();
         String[] contents = {"A", "7", "8", "9", "10"};
+        for (int i = 0; i < contents.length; i++) {
+            list.add(contents[i]);
+        }
         for (int i = 0; i < pokers.length; i++) {
             for (int j = 0; j < list.size(); j++) {
                 if (list.get(j).equals(pokers[i].getContent())) {
@@ -276,6 +279,9 @@ public class IfPoker {
         boolean isSave = false;
         ArrayList<String> list = new ArrayList<String>();
         String[] contents = {"10", "J", "Q", "K", "A"};
+        for (int i = 0; i < contents.length; i++) {
+            list.add(contents[i]);
+        }
         for (int i = 0; i < pokers.length; i++) {
             for (int j = 0; j < list.size(); j++) {
                 if (list.get(j).equals(pokers[i].getContent())) {

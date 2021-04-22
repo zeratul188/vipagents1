@@ -22,14 +22,14 @@ public class PokerSet extends IfPoker {
     }
 
     public PokerResult checkOption(Poker[] pokers) {
-        if (isFiveFlush(pokers)) return outResult(15);
+        if (isRoyalStraightFlush(pokers)) return outResult(9);
+        else if (isFiveFlush(pokers)) return outResult(15);
         else if (isBackStraightFlush(pokers)) return outResult(14);
+        else if (isStraightFlush(pokers)) return outResult(8);
         else if (isFiveCard(pokers)) return outResult(13);
+        else if (isFlush(pokers)) return outResult(7);
         else if (isMountain(pokers)) return outResult(12);
         else if (isBackStraight(pokers)) return outResult(11);
-        else if (isRoyalStraightFlush(pokers)) return outResult(9);
-        else if (isStraightFlush(pokers)) return outResult(8);
-        else if (isFlush(pokers)) return outResult(7);
         else if (isFourCard(pokers)) return outResult(6);
         else if (isStraight(pokers)) return outResult(5);
         else if (isFullHouse(pokers)) return outResult(4);

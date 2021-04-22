@@ -1,6 +1,8 @@
 package com.vip.vipagents.ui.slideshow;
 
-public class PokerResult {
+import java.io.Serializable;
+
+public class PokerResult implements Serializable, Comparable<PokerResult> {
     private int number = 0, score;
     private String name;
 
@@ -31,5 +33,12 @@ public class PokerResult {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(PokerResult o) {
+        if (this.number < o.number) return 1;
+        else if (this.number == o.number) return 0;
+        else return -1;
     }
 }

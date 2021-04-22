@@ -23,6 +23,7 @@ import com.vip.vipagents.R;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +40,10 @@ public class PokerActivity extends AppCompatActivity {
     private PokerSet pokerSet;
     private SimpleDateFormat format = null;
     private Date time = null;
+    private ArrayList<PokerResult> pokerResults;
+    private PokerAdapter pokerAdapter;
 
-    private int ticket = 0, number = 0;
+    private int ticket = 0, number = 0, demage = 0;
     private boolean isStart = false;
     private Poker[] pokers = new Poker[5];
 
@@ -96,6 +99,10 @@ public class PokerActivity extends AppCompatActivity {
 
         pokerSet = new PokerSet();
 
+        pokerResults = new ArrayList<PokerResult>();
+        pokerAdapter = new PokerAdapter(PokerActivity.this, pokerResults);
+        listView.setAdapter(pokerAdapter);
+
         createProfile();
         loadData();
 
@@ -114,6 +121,7 @@ public class PokerActivity extends AppCompatActivity {
                     toast(pokerResult.getName()+"("+pokerResult.getScore()+")");
                     uploadPokerResult(pokerResult);
                     for (int i = 0; i < pokers.length; i++) pokers[i] = null;
+                    loadData();
                 } else {
                     if (ticket < 1) {
                         toast("티켓이 부족합니다.");
@@ -135,6 +143,45 @@ public class PokerActivity extends AppCompatActivity {
                         uploadPoker(pokers[i], i);
                     }
                 }
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ticket = 2;
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("date", format.format(time));
+                taskMap.put("pokers", 0);
+                taskMap.put("ticket", 2);
+                mReference.updateChildren(taskMap);
+                mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
+                            mReference.child(data.getKey()).removeValue();
+                        }
+                        toast("초기화하였습니다.");
+                        loadData();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ticket++;
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("ticket", ticket);
+                mReference.updateChildren(taskMap);
+                txtTicket.setText(Integer.toString(ticket));
             }
         });
     }
@@ -233,6 +280,40 @@ public class PokerActivity extends AppCompatActivity {
 
             }
         });
+        pokerResults.clear();
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                demage = 0;
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
+                    int score = 0, number = 0;
+                    String name = "null";
+                    for (DataSnapshot data2 : data.getChildren()) {
+                        if (data2.getKey().equals("score")) {
+                            demage += Integer.parseInt(data2.getValue().toString());
+                            score = Integer.parseInt(data2.getValue().toString());
+                        } else if (data2.getKey().equals("name")) {
+                            name = data2.getValue().toString();
+                        } else if (data2.getKey().equals("number")) {
+                            number = Integer.parseInt(data2.getValue().toString());
+                        }
+                    }
+                    PokerResult pokerResult = new PokerResult(score, name);
+                    pokerResult.setNumber(number);
+                    pokerResults.add(pokerResult);
+                }
+                txtDemage.setText(Integer.toString(demage));
+                pokerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     private String loadProfile() {
