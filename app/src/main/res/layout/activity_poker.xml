@@ -66,13 +66,16 @@
 
             <TextView
                 android:id="@+id/txtTicket"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
                 android:text="null"
                 android:textColor="#000000"
                 android:textSize="25sp"
+                android:textAlignment="textEnd"
+                android:layout_marginRight="15dp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
@@ -248,7 +251,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/listView"
-            android:background="@drawable/contentbuttonsuctom"
+            android:background="@drawable/contentcustom"
             android:divider="#10000000"
             android:dividerHeight="1dp"
             android:paddingBottom="10dp"
@@ -260,7 +263,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/listType"
-            android:background="@drawable/contentbuttonsuctom"
+            android:background="@drawable/contentcustom"
             android:divider="#00000000"
             android:dividerHeight="2dp"
             android:paddingBottom="10dp"
