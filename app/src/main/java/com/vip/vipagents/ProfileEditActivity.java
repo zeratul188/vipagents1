@@ -161,7 +161,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 btnOK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (edtText.getText().toString().equals("division123")) {
+                        if (edtText.getText().toString().equals("wv2155")) {
                             rdoGrade[2].setEnabled(true);
                             rdoGrade[3].setEnabled(true);
                             rdoGrade[2].setTextColor(Color.parseColor("#000000"));

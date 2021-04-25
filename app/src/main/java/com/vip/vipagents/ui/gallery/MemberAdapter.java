@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.vip.vipagents.Member;
@@ -43,8 +44,13 @@ public class MemberAdapter extends BaseAdapter {
         ImageView imgGrade = convertView.findViewById(R.id.imgGrade);
         TextView txtID = convertView.findViewById(R.id.txtID);
         TextView txtGrade = convertView.findViewById(R.id.txtGrade);
+        TextView txtLevel = convertView.findViewById(R.id.txtLevel);
+        ProgressBar progressLevel = convertView.findViewById(R.id.progressLevel);
 
         txtID.setText(members.get(position).getId());
+        txtLevel.setText(Integer.toString((members.get(position).getExp()/200)+1));
+        progressLevel.setMax(200);
+        progressLevel.setProgress(members.get(position).getExp()%200);
         switch (members.get(position).getGrade()) {
             case 0:
                 txtGrade.setText("수습 요원");

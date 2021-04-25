@@ -4,14 +4,23 @@ import java.io.Serializable;
 
 public class Member implements Serializable, Comparable<Member> {
     private String id, pwd;
-    private int grade;
+    private int grade, exp;
     private boolean isClan;
 
-    public Member(String id, String pwd, int grade, boolean isClan) {
+    public Member(String id, String pwd, int grade, boolean isClan, int exp) {
         this.id = id;
         this.pwd = pwd;
         this.grade = grade;
         this.isClan = isClan;
+        this.exp = exp;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 
     public String getId() {

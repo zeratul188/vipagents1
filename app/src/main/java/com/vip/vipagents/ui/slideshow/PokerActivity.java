@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vip.vipagents.CharactorLevel;
 import com.vip.vipagents.R;
 
 import java.io.FileInputStream;
@@ -54,6 +55,7 @@ public class PokerActivity extends AppCompatActivity {
     private PokerTypeAdatper pokerTypeAdatper;
     private AlertDialog.Builder builder = null;
     private AlertDialog alertDialog = null;
+    private CharactorLevel charactorLevel = null;
 
     private int ticket = 0, number = 0, demage = 0;
     private boolean isStart = false, isDeveloper = false;
@@ -74,6 +76,7 @@ public class PokerActivity extends AppCompatActivity {
 
         format = new SimpleDateFormat("yyyy년 MM월 dd일");
         time = new Date();
+        charactorLevel = new CharactorLevel(PokerActivity.this, loadProfile());
 
         txtDemage = findViewById(R.id.txtDemage);
         txtTicket = findViewById(R.id.txtTicket);
@@ -145,6 +148,7 @@ public class PokerActivity extends AppCompatActivity {
                     toast(pokerResult.getName()+"("+pokerResult.getScore()+")");
                     uploadPokerResult(pokerResult);
                     for (int i = 0; i < pokers.length; i++) pokers[i] = null;
+                    charactorLevel.getExp(pokerResult.getScore());
                     loadData();
                 } else {
                     if (ticket < 1) {
@@ -471,7 +475,7 @@ public class PokerActivity extends AppCompatActivity {
                         if (edtText.getText().toString().equals("")) {
                             toast("비밀번호를 입력하십시오.");
                             return;
-                        } else if (edtText.getText().toString().equals("division123")) {
+                        } else if (edtText.getText().toString().equals("wv2155")) {
                             isDeveloper = true;
                             btnAdd.setVisibility(View.VISIBLE);
                             toast("테스트 모드를 활성화하였습니다.");

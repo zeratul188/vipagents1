@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vip.vipagents.CharactorLevel;
 import com.vip.vipagents.R;
 
 import java.io.FileInputStream;
@@ -54,6 +55,7 @@ public class RandomTowerActivity extends AppCompatActivity {
     private Date time = null;
     private AlertDialog.Builder builder = null;
     private AlertDialog alertDialog = null;
+    private CharactorLevel charactorLevel = null;
 
     private int[] imageResource = {R.drawable.blacktuskcustom, R.drawable.hyenascustom, R.drawable.truesonscustom, R.drawable.rikercustom, R.drawable.cleanerscustom, R.drawable.outcastcustom, R.drawable.firebirdcustom, R.drawable.darkzonecustom};
     private Drawable[] drawables = new Drawable[8];
@@ -75,6 +77,7 @@ public class RandomTowerActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("Members/"+loadProfile()+"/Tower");
+        charactorLevel = new CharactorLevel(RandomTowerActivity.this, loadProfile());
 
         txtMoney = findViewById(R.id.txtMoney);
         txtLegend = findViewById(R.id.txtLegend);
@@ -187,7 +190,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                         if (chkEdit.isChecked()) {
                             if (btnBox[x][y].getDrawable() == null) return;
                             sell(x, y);
-                            toast("타워를 팔았습니다.");
+                            charactorLevel.getExp(1);
                             return;
                         }
                         if (btnBox[x][y].getDrawable() == null) {
@@ -196,6 +199,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                                 return;
                             }
                             createTower(x, y);
+                            charactorLevel.getExp(5);
                         } else {
                             for (int i = 0; i < btnBox.length; i++) {
                                 for (int j = 0; j < btnBox[i].length; j++) {
@@ -208,7 +212,24 @@ public class RandomTowerActivity extends AppCompatActivity {
                                         taskMap.put("grade", towers[x][y].getGrade());
                                         taskMap.put("type", towers[x][y].getType());
                                         mReference.child(Integer.toString(x)+Integer.toString(y)).updateChildren(taskMap);
-                                        toast("타워를 합쳤습니다.");
+                                        int up = 0;
+                                        switch (towers[x][y].getGrade()) {
+                                            case 2:
+                                                up = 10;
+                                                break;
+                                            case 3:
+                                                up = 20;
+                                                break;
+                                            case 4:
+                                                up = 40;
+                                                break;
+                                            case 5:
+                                                up = 80;
+                                                break;
+                                            default:
+                                                up = 5;
+                                        }
+                                        charactorLevel.getExp(up);
                                         loadData();
                                         return;
                                     }
@@ -534,7 +555,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                         if (edtText.getText().toString().equals("")) {
                             toast("비밀번호를 입력하십시오.");
                             return;
-                        } else if (edtText.getText().toString().equals("division123")) {
+                        } else if (edtText.getText().toString().equals("wv2155")) {
                             isDeveloper = true;
                             btnAdd.setVisibility(View.VISIBLE);
                             toast("테스트 모드를 활성화하였습니다.");

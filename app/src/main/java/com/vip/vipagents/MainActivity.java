@@ -61,8 +61,8 @@ public class MainActivity extends BaseActivity {
     private AlertDialog.Builder builder = null;
     private AlertDialog alertDialog = null;
 
-    private TextView txtName = null;
-    private LinearLayout layoutGrade = null;
+    private TextView txtName = null, txtLevel = null;
+    private LinearLayout layoutGrade = null, layoutLevel = null;
     private ImageView imgGrade = null;
     private TextView txtGrade = null;
 
@@ -126,6 +126,8 @@ public class MainActivity extends BaseActivity {
         layoutGrade = view.findViewById(R.id.layoutGrade);
         imgGrade = view.findViewById(R.id.imgGrade);
         txtGrade = view.findViewById(R.id.txtGrade);
+        txtLevel = view.findViewById(R.id.txtLevel);
+        layoutLevel = view.findViewById(R.id.layoutLevel);
 
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -200,7 +202,7 @@ public class MainActivity extends BaseActivity {
                     for (DataSnapshot data : snapshot.getChildren()) {
                         if (data.child("id").getValue().toString().equals(loadProfile())) {
                             logined_member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(),
-                                    Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
+                                    Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()), Integer.parseInt(data.child("exp").getValue().toString()));
                         }
                     }
                     if (logined_member != null) {
@@ -226,6 +228,9 @@ public class MainActivity extends BaseActivity {
                                 break;
                         }
                         txtName.setText(logined_member.getId());
+                        layoutLevel.setVisibility(View.VISIBLE);
+                        int level = (logined_member.getExp()/200)+1;
+                        txtLevel.setText(Integer.toString(level));
                     }
                 }
 
@@ -275,12 +280,13 @@ public class MainActivity extends BaseActivity {
                 break;
             case ACT_SETTING_RESULT:
                 if (resultCode == RESULT_OK) {
-                    boolean logouted = data.getBooleanExtra("logouted", false);
+                    boolean logouted = data.getBooleanExtra("logouted", true);
                     if (logouted) {
                         logined_member = null;
                         txtName.setText("로그인해주세요");
                         logined = false;
                         layoutGrade.setVisibility(View.GONE);
+                        layoutLevel.setVisibility(View.GONE);
                     } else {
                         if (logined_member.isClan()) layoutGrade.setVisibility(View.VISIBLE);
                         else layoutGrade.setVisibility(View.GONE);

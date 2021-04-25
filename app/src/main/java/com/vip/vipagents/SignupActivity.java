@@ -106,7 +106,7 @@ public class SignupActivity extends BaseActivity {
                 btnOK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (edtText.getText().toString().equals("division123")) {
+                        if (edtText.getText().toString().equals("wv2155")) {
                             rdoGrade[2].setEnabled(true);
                             rdoGrade[3].setEnabled(true);
                             rdoGrade[2].setTextColor(Color.parseColor("#000000"));
@@ -187,7 +187,7 @@ public class SignupActivity extends BaseActivity {
                         grade = 3;
                         break;
                 }
-                Member member = new Member(edtID.getText().toString(), edtPassword.getText().toString(), grade, swtClan.isChecked());
+                Member member = new Member(edtID.getText().toString(), edtPassword.getText().toString(), grade, swtClan.isChecked(), 0);
                 mReference.child(edtID.getText().toString()).setValue(member);
                 toast(edtID.getText().toString()+"님 환영합니다!!");
                 finish();

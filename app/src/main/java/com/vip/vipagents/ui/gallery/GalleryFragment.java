@@ -94,7 +94,8 @@ public class GalleryFragment extends Fragment {
                     String pwd = data.child("pwd").getValue().toString();
                     int grade = Integer.parseInt(data.child("grade").getValue().toString());
                     boolean isClan = Boolean.parseBoolean(data.child("clan").getValue().toString());
-                    Member member = new Member(id, pwd, grade, isClan);
+                    int exp = Integer.parseInt(data.child("exp").getValue().toString());
+                    Member member = new Member(id, pwd, grade, isClan, exp);
                     members.add(member);
                     Collections.sort(members);
                 }
@@ -122,39 +123,40 @@ public class GalleryFragment extends Fragment {
                             String pwd = data.child("pwd").getValue().toString();
                             int grade = Integer.parseInt(data.child("grade").getValue().toString());
                             boolean isClan = Boolean.parseBoolean(data.child("clan").getValue().toString());
+                            int exp = Integer.parseInt(data.child("exp").getValue().toString());
                             Member member = null;
                             switch (checkedId) {
                                 case R.id.rdoFilter1:
-                                    member = new Member(id, pwd, grade, isClan);
+                                    member = new Member(id, pwd, grade, isClan, exp);
                                     members.add(member);
                                     break;
                                 case R.id.rdoFilter2:
                                     if (!isClan) {
-                                        member = new Member(id, pwd, grade, isClan);
+                                        member = new Member(id, pwd, grade, isClan, exp);
                                         members.add(member);
                                     }
                                     break;
                                 case R.id.rdoFilter3:
                                     if (isClan && grade == 0) {
-                                        member = new Member(id, pwd, grade, isClan);
+                                        member = new Member(id, pwd, grade, isClan, exp);
                                         members.add(member);
                                     }
                                     break;
                                 case R.id.rdoFilter4:
                                     if (isClan && grade == 1) {
-                                        member = new Member(id, pwd, grade, isClan);
+                                        member = new Member(id, pwd, grade, isClan, exp);
                                         members.add(member);
                                     }
                                     break;
                                 case R.id.rdoFilter5:
                                     if (isClan && grade == 2) {
-                                        member = new Member(id, pwd, grade, isClan);
+                                        member = new Member(id, pwd, grade, isClan, exp);
                                         members.add(member);
                                     }
                                     break;
                                 case R.id.rdoFilter6:
                                     if (isClan && grade == 3) {
-                                        member = new Member(id, pwd, grade, isClan);
+                                        member = new Member(id, pwd, grade, isClan, exp);
                                         members.add(member);
                                     }
                                     break;

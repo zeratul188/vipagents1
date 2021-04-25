@@ -21,21 +21,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity {
-    private Button btnEdit, btnEditPassword, btnReset;
-    private TextView txtGrade;
+    private Button btnEdit, btnEditPassword, btnReset, btnLevelReset;
+    private TextView txtGrade, txtLevel, txtLevelValue;
     private ImageView imgGrade;
+    private ProgressBar progressLevel;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
     private AlertDialog.Builder builder = null;
     private AlertDialog alertDialog = null;
+    private CharactorLevel charactorLevel = null;
+
+    private int exp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +67,72 @@ public class MyPageActivity extends AppCompatActivity {
         btnReset = findViewById(R.id.btnReset);
         txtGrade = findViewById(R.id.txtGrade);
         imgGrade = findViewById(R.id.imgGrade);
+        txtLevel = findViewById(R.id.txtLevel);
+        txtLevelValue = findViewById(R.id.txtLevelValue);
+        progressLevel = findViewById(R.id.progressLevel);
+        btnLevelReset = findViewById(R.id.btnLevelReset);
+
+        charactorLevel = new CharactorLevel(MyPageActivity.this, loadProfile());
 
         mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference("Members/"+loadProfile());
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    if (data.getKey().equals("exp")) {
+                        exp = Integer.parseInt(data.getValue().toString());
+                    }
+                }
+                txtLevel.setText(Integer.toString((exp/200)+1));
+                txtLevelValue.setText(Integer.toString(exp%200));
+                progressLevel.setMax(200);
+                progressLevel.setProgress(exp%200);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        btnLevelReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View view = getLayoutInflater().inflate(R.layout.answerdialog, null);
+
+                final TextView txtView = view.findViewById(R.id.txtView);
+                final Button btnCancel = view.findViewById(R.id.btnCancel);
+                final Button btnOK = view.findViewById(R.id.btnOK);
+
+                txtView.setText("레벨을 1로 초기화하시겠습니까?");
+                btnOK.setText("초기화");
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        resetLevel();
+                        toast("레벨을 초기화하였습니다.");
+                        alertDialog.dismiss();
+                    }
+                });
+
+                builder = new AlertDialog.Builder(MyPageActivity.this);
+                builder.setView(view);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+            }
+        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +209,18 @@ public class MyPageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void resetLevel() {
+        mReference = mDatabase.getReference("Members/"+loadProfile());
+        exp = 0;
+        txtLevel.setText("1");
+        txtLevelValue.setText("0");
+        progressLevel.setMax(200);
+        progressLevel.setProgress(0);
+        Map<String, Object> taskMap = new HashMap<String, Object>();
+        taskMap.put("exp", 0);
+        mReference.updateChildren(taskMap);
     }
 
     private void toast(String message) {

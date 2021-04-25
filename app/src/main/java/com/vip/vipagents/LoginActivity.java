@@ -67,7 +67,8 @@ public class LoginActivity extends BaseActivity {
                         for (DataSnapshot data : snapshot.getChildren()) {
                             if (data.child("id").getValue().toString().equals(edtID.getText().toString())) {
                                 if (data.child("pwd").getValue().toString().equals(edtPassword.getText().toString())) {
-                                    member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()));
+                                    member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(), Integer.parseInt(data.child("grade").getValue().toString())
+                                            , Boolean.parseBoolean(data.child("clan").getValue().toString()), Integer.parseInt(data.child("exp").getValue().toString()));
                                     message = "로그인하셨습니다.";
                                     Intent intent = new Intent();
                                     intent.putExtra("logined_member", member);

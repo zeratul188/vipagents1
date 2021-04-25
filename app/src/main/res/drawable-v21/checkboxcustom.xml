@@ -4,7 +4,7 @@
     <item android:state_checked="true">
         <shape>
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
-            <solid android:color="#00000000" />
+            <solid android:color="#40fe6e0e" />
             <corners android:radius="5dp"/>
             <stroke
                 android:width="2dp"
