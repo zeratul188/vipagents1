@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,14 +39,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PokerActivity extends AppCompatActivity {
-    private TextView txtDemage, txtTicket;
+    private TextView txtDemage, txtTicket, txtLevel, txtLevelValue;
+    private ProgressBar progressLevel;
     private Button btnAdd, btnOK, btnReset;
     private TextView[] txtCard = new TextView[5];
     private ImageView[] imgChange = new ImageView[5];
     private ListView listView, listType;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
+    private DatabaseReference mReference, memberRef;
     private PokerSet pokerSet;
     private SimpleDateFormat format = null;
     private Date time = null;
@@ -57,7 +59,7 @@ public class PokerActivity extends AppCompatActivity {
     private AlertDialog alertDialog = null;
     private CharactorLevel charactorLevel = null;
 
-    private int ticket = 0, number = 0, demage = 0;
+    private int ticket = 0, number = 0, demage = 0, exp = 0;
     private boolean isStart = false, isDeveloper = false;
     private Poker[] pokers = new Poker[5];
 
@@ -85,6 +87,11 @@ public class PokerActivity extends AppCompatActivity {
         btnReset = findViewById(R.id.btnReset);
         listView = findViewById(R.id.listView);
         listType = findViewById(R.id.listType);
+        txtLevel = findViewById(R.id.txtLevel);
+        txtLevelValue = findViewById(R.id.txtLevelValue);
+        progressLevel = findViewById(R.id.progressLevel);
+
+        progressLevel.setMax(200);
 
         int resource;
         for (int i = 0; i < txtCard.length; i++) {
@@ -112,8 +119,11 @@ public class PokerActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("Members/"+loadProfile()+"/Poker");
+        memberRef = mDatabase.getReference("Members/"+loadProfile());
 
         pokerSet = new PokerSet();
+
+        uploadExp(0);
 
         pokerResults = new ArrayList<PokerResult>();
         pokerAdapter = new PokerAdapter(PokerActivity.this, pokerResults);
@@ -148,7 +158,7 @@ public class PokerActivity extends AppCompatActivity {
                     toast(pokerResult.getName()+"("+pokerResult.getScore()+")");
                     uploadPokerResult(pokerResult);
                     for (int i = 0; i < pokers.length; i++) pokers[i] = null;
-                    charactorLevel.getExp(pokerResult.getScore());
+                    uploadExp(pokerResult.getScore());
                     loadData();
                 } else {
                     if (ticket < 1) {
@@ -203,6 +213,7 @@ public class PokerActivity extends AppCompatActivity {
                         taskMap.put("pokers", 0);
                         taskMap.put("ticket", 2);
                         mReference.updateChildren(taskMap);
+                        uploadExp(-100);
                         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -240,6 +251,34 @@ public class PokerActivity extends AppCompatActivity {
                 taskMap.put("ticket", ticket);
                 mReference.updateChildren(taskMap);
                 txtTicket.setText(Integer.toString(ticket));
+            }
+        });
+    }
+
+    private void uploadExp(final int update) {
+        memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    if (data.getKey().equals("exp")) {
+                        exp = Integer.parseInt(data.getValue().toString());
+                    }
+                }
+                int undo_level = exp/200;
+                exp += update;
+                if (exp < 0) exp = 0;
+                txtLevel.setText(Integer.toString((exp/200)+1));
+                txtLevelValue.setText("("+Integer.toString(exp)+"/"+Integer.toString(((exp/200)+1)*200)+")");
+                progressLevel.setProgress(exp%200);
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("exp", exp);
+                memberRef.updateChildren(taskMap);
+                if (undo_level < exp/200) toast("레벨업 하였습니다. Lv."+(undo_level+1)+" -> Lv."+(exp/200+1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

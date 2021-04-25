@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity {
     private Button btnEdit, btnEditPassword, btnReset, btnLevelReset;
-    private TextView txtGrade, txtLevel, txtLevelValue;
+    private TextView txtGrade, txtLevel, txtLevelValue, txtLevelMax;
     private ImageView imgGrade;
     private ProgressBar progressLevel;
 
@@ -71,6 +71,7 @@ public class MyPageActivity extends AppCompatActivity {
         txtLevelValue = findViewById(R.id.txtLevelValue);
         progressLevel = findViewById(R.id.progressLevel);
         btnLevelReset = findViewById(R.id.btnLevelReset);
+        txtLevelMax = findViewById(R.id.txtLevelMax);
 
         charactorLevel = new CharactorLevel(MyPageActivity.this, loadProfile());
 
@@ -85,7 +86,8 @@ public class MyPageActivity extends AppCompatActivity {
                     }
                 }
                 txtLevel.setText(Integer.toString((exp/200)+1));
-                txtLevelValue.setText(Integer.toString(exp%200));
+                txtLevelValue.setText(Integer.toString(exp));
+                txtLevelMax.setText(Integer.toString(((exp/200)+1)*200));
                 progressLevel.setMax(200);
                 progressLevel.setProgress(exp%200);
             }

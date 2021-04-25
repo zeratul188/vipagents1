@@ -195,16 +195,25 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (loadProfile() != null && !loadProfile().equals("null")) {
-            mReference = mDatabase.getReference("Members");
+            mReference = mDatabase.getReference("Members/"+loadProfile());
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String id = "null", pwd = "null";
+                    int grade = 0, exp = 0;
+                    boolean isClan = false;
                     for (DataSnapshot data : snapshot.getChildren()) {
-                        if (data.child("id").getValue().toString().equals(loadProfile())) {
+                        if (data.getKey().equals("id")) id = data.getValue().toString();
+                        else if (data.getKey().equals("pwd")) pwd = data.getValue().toString();
+                        else if (data.getKey().equals("grade")) grade = Integer.parseInt(data.getValue().toString());
+                        else if (data.getKey().equals("clan")) isClan = Boolean.parseBoolean(data.getValue().toString());
+                        else if (data.getKey().equals("exp")) exp = Integer.parseInt(data.getValue().toString());
+                        /*if (data.child("id").getValue().toString().equals(loadProfile())) {
                             logined_member = new Member(data.child("id").getValue().toString(), data.child("pwd").getValue().toString(),
                                     Integer.parseInt(data.child("grade").getValue().toString()), Boolean.parseBoolean(data.child("clan").getValue().toString()), Integer.parseInt(data.child("exp").getValue().toString()));
-                        }
+                        }*/
                     }
+                    logined_member = new Member(id, pwd, grade, isClan, exp);
                     if (logined_member != null) {
                         logined = true;
                         if (logined_member.isClan()) layoutGrade.setVisibility(View.VISIBLE);

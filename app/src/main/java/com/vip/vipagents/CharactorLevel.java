@@ -36,6 +36,30 @@ public class CharactorLevel {
         return now_exp;
     }
 
+    public void downExp(final int exp_value) {
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    if (data.getKey().equals("exp")) {
+                        now_exp = Integer.parseInt(data.getValue().toString());
+                    }
+                }
+                int undo_level = now_exp/200;
+                now_exp -= exp_value;
+                if (now_exp < 0) now_exp = 0;
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("exp", now_exp);
+                mReference.updateChildren(taskMap);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void getExp(final int exp_value) {
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

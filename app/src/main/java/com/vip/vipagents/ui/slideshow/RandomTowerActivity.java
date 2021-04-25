@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,18 +40,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RandomTowerActivity extends AppCompatActivity {
-    private TextView txtMoney, txtLegend, txtElite, txtEpic, txtRare, txtNormal, txtDemage;
+    private TextView txtMoney, txtLegend, txtElite, txtEpic, txtRare, txtNormal, txtDemage, txtLevel, txtLevelValue;
+    private ProgressBar progressLevel;
     private Button btnReset, btnAdd;
     private CheckBox chkEdit;
     private ImageView[][] btnBox = new ImageView[6][5];
 
     private Tower[][] towers = new Tower[6][5];
-    private int money = 0;
+    private int money = 0, exp = 0;
     private String now_date;
     private boolean isDeveloper = false;
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReference;
+    private DatabaseReference mReference, memberRef;
     private SimpleDateFormat format = null;
     private Date time = null;
     private AlertDialog.Builder builder = null;
@@ -77,7 +79,9 @@ public class RandomTowerActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("Members/"+loadProfile()+"/Tower");
+        memberRef = mDatabase.getReference("Members/"+loadProfile());
         charactorLevel = new CharactorLevel(RandomTowerActivity.this, loadProfile());
+
 
         txtMoney = findViewById(R.id.txtMoney);
         txtLegend = findViewById(R.id.txtLegend);
@@ -89,6 +93,12 @@ public class RandomTowerActivity extends AppCompatActivity {
         chkEdit = findViewById(R.id.chkEdit);
         btnAdd = findViewById(R.id.btnAdd);
         txtDemage = findViewById(R.id.txtDemage);
+        txtLevel = findViewById(R.id.txtLevel);
+        txtLevelValue = findViewById(R.id.txtLevelValue);
+        progressLevel = findViewById(R.id.progressLevel);
+
+        progressLevel.setMax(200);
+        uploadExp(0);
 
         txtMoney.setText(Integer.toString(money));
 
@@ -123,7 +133,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                 final Button btnOK = view.findViewById(R.id.btnOK);
                 final Button btnCancel = view.findViewById(R.id.btnCancel);
 
-                txtView.setText("랜덤 타워들이 모두 삭제되고 골드는 500으로 초기화됩니다.");
+                txtView.setText("랜덤 타워들이 모두 삭제되고 골드는 500으로 초기화됩니다. 초기화시 경험치 100을 소모합니다. 경험치가 100 이하일 경우는 0으로 초기화됩니다.");
                 btnOK.setText("초기화");
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +166,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
+                                uploadExp(-100);
                                 loadData();
                             }
 
@@ -189,8 +200,8 @@ public class RandomTowerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (chkEdit.isChecked()) {
                             if (btnBox[x][y].getDrawable() == null) return;
+                            uploadExp(1);
                             sell(x, y);
-                            charactorLevel.getExp(1);
                             return;
                         }
                         if (btnBox[x][y].getDrawable() == null) {
@@ -198,8 +209,8 @@ public class RandomTowerActivity extends AppCompatActivity {
                                 toast("골드가 부족합니다.");
                                 return;
                             }
+                            uploadExp(5);
                             createTower(x, y);
-                            charactorLevel.getExp(5);
                         } else {
                             for (int i = 0; i < btnBox.length; i++) {
                                 for (int j = 0; j < btnBox[i].length; j++) {
@@ -229,7 +240,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                                             default:
                                                 up = 5;
                                         }
-                                        charactorLevel.getExp(up);
+                                        uploadExp(up);
                                         loadData();
                                         return;
                                     }
@@ -255,6 +266,34 @@ public class RandomTowerActivity extends AppCompatActivity {
             }
             toast("로그인 후 이용해주세요.");
         }
+    }
+
+    private void uploadExp(final int update) {
+        memberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    if (data.getKey().equals("exp")) {
+                        exp = Integer.parseInt(data.getValue().toString());
+                    }
+                }
+                int undo_level = exp/200;
+                exp += update;
+                if (exp < 0) exp = 0;
+                txtLevel.setText(Integer.toString((exp/200)+1));
+                txtLevelValue.setText("("+Integer.toString(exp)+"/"+Integer.toString(((exp/200)+1)*200)+")");
+                progressLevel.setProgress(exp%200);
+                Map<String, Object> taskMap = new HashMap<String, Object>();
+                taskMap.put("exp", exp);
+                memberRef.updateChildren(taskMap);
+                if (undo_level < exp/200) toast("레벨업 하였습니다. Lv."+(undo_level+1)+" -> Lv."+(exp/200+1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void createTower(final int x, final int y) {
