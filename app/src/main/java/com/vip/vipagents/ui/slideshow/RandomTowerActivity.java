@@ -200,7 +200,6 @@ public class RandomTowerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (chkEdit.isChecked()) {
                             if (btnBox[x][y].getDrawable() == null) return;
-                            uploadExp(1);
                             sell(x, y);
                             return;
                         }
@@ -226,19 +225,19 @@ public class RandomTowerActivity extends AppCompatActivity {
                                         int up = 0;
                                         switch (towers[x][y].getGrade()) {
                                             case 2:
-                                                up = 10;
-                                                break;
-                                            case 3:
                                                 up = 20;
                                                 break;
-                                            case 4:
+                                            case 3:
                                                 up = 40;
                                                 break;
-                                            case 5:
+                                            case 4:
                                                 up = 80;
                                                 break;
+                                            case 5:
+                                                up = 160;
+                                                break;
                                             default:
-                                                up = 5;
+                                                up = 10;
                                         }
                                         uploadExp(up);
                                         loadData();
@@ -325,18 +324,23 @@ public class RandomTowerActivity extends AppCompatActivity {
                 switch (grade) {
                     case 1:
                         money += 50;
+                        uploadExp(2);
                         break;
                     case 2:
                         money += 100;
+                        uploadExp(8);
                         break;
                     case 3:
                         money += 200;
+                        uploadExp(32);
                         break;
                     case 4:
                         money += 400;
+                        uploadExp(128);
                         break;
                     case 5:
                         money += 800;
+                        uploadExp(512);
                         break;
                 }
                 if (grade != 0) {
