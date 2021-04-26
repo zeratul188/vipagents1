@@ -208,7 +208,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                                 toast("골드가 부족합니다.");
                                 return;
                             }
-                            uploadExp(5);
+                            uploadExp(10);
                             createTower(x, y);
                         } else {
                             for (int i = 0; i < btnBox.length; i++) {
@@ -228,13 +228,13 @@ public class RandomTowerActivity extends AppCompatActivity {
                                                 up = 20;
                                                 break;
                                             case 3:
-                                                up = 40;
+                                                up = 50;
                                                 break;
                                             case 4:
-                                                up = 80;
+                                                up = 125;
                                                 break;
                                             case 5:
-                                                up = 160;
+                                                up = 300;
                                                 break;
                                             default:
                                                 up = 10;
