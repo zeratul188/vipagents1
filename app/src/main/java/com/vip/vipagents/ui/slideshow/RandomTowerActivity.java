@@ -166,7 +166,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                uploadExp(-100);
+                                uploadExp(-200);
                                 loadData();
                             }
 

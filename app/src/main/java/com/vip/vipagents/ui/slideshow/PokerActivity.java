@@ -158,7 +158,7 @@ public class PokerActivity extends AppCompatActivity {
                     toast(pokerResult.getName()+"("+pokerResult.getScore()+")");
                     uploadPokerResult(pokerResult);
                     for (int i = 0; i < pokers.length; i++) pokers[i] = null;
-                    uploadExp(pokerResult.getScore());
+                    uploadExp(pokerResult.getScore()*3);
                     loadData();
                 } else {
                     if (ticket < 1) {
@@ -213,7 +213,7 @@ public class PokerActivity extends AppCompatActivity {
                         taskMap.put("pokers", 0);
                         taskMap.put("ticket", 2);
                         mReference.updateChildren(taskMap);
-                        uploadExp(-100);
+                        uploadExp(-200);
                         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
