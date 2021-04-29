@@ -126,7 +126,7 @@
             android:background="@drawable/gradebackground"
             android:paddingBottom="10dp"
             android:paddingRight="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="2dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                 android:text="0"
                 android:layout_marginRight="7dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="45sp"
+                android:textSize="35sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
         </FrameLayout>
@@ -160,8 +160,8 @@
             android:background="@drawable/gradebackground"
             android:paddingBottom="10dp"
             android:paddingRight="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp">
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                 android:text="0"
                 android:layout_marginRight="7dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="45sp"
+                android:textSize="35sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
         </FrameLayout>
@@ -195,8 +195,8 @@
             android:background="@drawable/gradebackground"
             android:paddingBottom="10dp"
             android:paddingRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                 android:text="0"
                 android:layout_marginRight="7dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="45sp"
+                android:textSize="35sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
         </FrameLayout>
@@ -230,8 +230,8 @@
             android:background="@drawable/gradebackground"
             android:paddingBottom="10dp"
             android:paddingRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
                 android:text="0"
                 android:layout_marginRight="7dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="45sp"
+                android:textSize="35sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
         </FrameLayout>
@@ -264,7 +264,7 @@
             android:layout_height="100dp"
             android:background="@drawable/gradebackground"
             android:paddingBottom="10dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
             android:paddingRight="5dp">
             <ImageView
                 android:layout_width="match_parent"
@@ -288,7 +288,7 @@
                 android:text="0"
                 android:layout_marginRight="7dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="45sp"
+                android:textSize="35sp"
                 android:textColor="#000000"
                 android:textStyle="bold"/>
         </FrameLayout>
