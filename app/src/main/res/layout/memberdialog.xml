@@ -339,10 +339,6 @@
         android:paddingRight="5dp"
         android:layout_marginRight="3dp"
         android:listSelector="#00000000"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="40dp"

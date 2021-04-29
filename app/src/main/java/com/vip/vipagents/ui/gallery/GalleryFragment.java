@@ -1,18 +1,25 @@
 package com.vip.vipagents.ui.gallery;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,7 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vip.vipagents.Member;
+import com.vip.vipagents.MyPageActivity;
 import com.vip.vipagents.R;
+import com.vip.vipagents.ui.slideshow.PokerAdapter;
+import com.vip.vipagents.ui.slideshow.PokerResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +54,8 @@ public class GalleryFragment extends Fragment {
     private ArrayList<Member> members;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private AlertDialog.Builder builder = null;
+    private AlertDialog alertDialog = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +121,173 @@ public class GalleryFragment extends Fragment {
         });
         memberAdapter = new MemberAdapter(getActivity(), members);
         listMembers.setAdapter(memberAdapter);
+
+        listMembers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = members.get(position).getId();
+                int exp = members.get(position).getExp();
+                int level = (exp/200)+1;
+                View main = getLayoutInflater().inflate(R.layout.memberdialog, null);
+
+                final ImageView imgGrade = main.findViewById(R.id.imgGrade);
+                final TextView txtID = main.findViewById(R.id.txtID);
+                final TextView txtGrade = main.findViewById(R.id.txtGrade);
+                final TextView txtLevel = main.findViewById(R.id.txtLevel);
+                final TextView txtLevelValue = main.findViewById(R.id.txtLevelValue);
+                final TextView txtTowerPower = main.findViewById(R.id.txtTowerPower);
+                final TextView txtPokerPower = main.findViewById(R.id.txtPokerPower);
+                final TextView txtLegend = main.findViewById(R.id.txtLegend);
+                final TextView txtElite = main.findViewById(R.id.txtElite);
+                final TextView txtEpic = main.findViewById(R.id.txtEpic);
+                final TextView txtRare = main.findViewById(R.id.txtRare);
+                final TextView txtNormal = main.findViewById(R.id.txtNormal);
+                final ProgressBar progressLevel = main.findViewById(R.id.progressLevel);
+                final ListView listPoker = main.findViewById(R.id.listView);
+                final Button btnOK = main.findViewById(R.id.btnOK);
+
+                DatabaseReference towerRef = mDatabase.getReference("Members/"+name+"/Tower");
+                DatabaseReference pokerRef = mDatabase.getReference("Members/"+name+"/Poker");
+
+                txtID.setText(name);
+
+                switch (members.get(position).getGrade()) {
+                    case 3:
+                        imgGrade.setImageResource(R.drawable.diff4);
+                        txtGrade.setText("지휘관");
+                        break;
+                    case 2:
+                        imgGrade.setImageResource(R.drawable.diff3);
+                        txtGrade.setText("부관");
+                        break;
+                    case 1:
+                        imgGrade.setImageResource(R.drawable.diff2);
+                        txtGrade.setText("요원");
+                        break;
+                    default:
+                        imgGrade.setImageResource(R.drawable.diff1);
+                        txtGrade.setText("수습 요원");
+                }
+
+                if (members.get(position).isClan()) {
+                    imgGrade.setVisibility(View.VISIBLE);
+                    txtGrade.setVisibility(View.VISIBLE);
+                } else {
+                    imgGrade.setVisibility(View.GONE);
+                    txtGrade.setVisibility(View.GONE);
+                }
+
+                txtLevel.setText(Integer.toString(level));
+                txtLevelValue.setText("("+exp+"/"+level*200+")");
+                progressLevel.setMax(200);
+                progressLevel.setProgress(exp%200);
+
+                towerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int legend = 0, elite = 0, epic = 0, rare = 0, normal = 0, bonus = 0;
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (data.getKey().equals("money") || data.getKey().equals("date")) continue;
+                            int type = 0, grade = 0;
+                            for (DataSnapshot data2 : data.getChildren()) {
+                                if (data2.getKey().equals("type")) type = Integer.parseInt(data2.getValue().toString());
+                                else if (data2.getKey().equals("grade")) grade = Integer.parseInt(data2.getValue().toString());
+                            }
+                            switch (grade) {
+                                case 1:
+                                    normal++;
+                                    if (type == 7) bonus += 23;
+                                    else if (type == 8) bonus += 8;
+                                    break;
+                                case 2:
+                                    rare++;
+                                    if (type == 7) bonus += 68;
+                                    else if (type == 8) bonus += 23;
+                                    break;
+                                case 3:
+                                    epic++;
+                                    if (type == 7) bonus += 203;
+                                    else if (type == 8) bonus += 68;
+                                    break;
+                                case 4:
+                                    elite++;
+                                    if (type == 7) bonus += 608;
+                                    else if (type == 8) bonus += 203;
+                                    break;
+                                case 5:
+                                    legend++;
+                                    if (type == 7) bonus += 1823;
+                                    else if (type == 8) bonus += 608;
+                                    break;
+                            }
+                        }
+                        int result = (normal*75) + (rare*225) + (epic*675) + (elite*2025) + (legend*6075);
+                        result += bonus;
+                        txtTowerPower.setText(Integer.toString(result));
+                        txtLegend.setText(Integer.toString(legend));
+                        txtElite.setText(Integer.toString(elite));
+                        txtEpic.setText(Integer.toString(epic));
+                        txtRare.setText(Integer.toString(rare));
+                        txtNormal.setText(Integer.toString(normal));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                final ArrayList<PokerResult> pokerResults = new ArrayList<PokerResult>();
+                final PokerAdapter pokerAdapter = new PokerAdapter(getActivity(), pokerResults);
+                listPoker.setAdapter(pokerAdapter);
+                pokerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int demage = 0;
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            if (data.getKey().equals("date") || data.getKey().equals("pokers") || data.getKey().equals("ticket")) continue;
+                            int score = 0, number = 0;
+                            String name = "null";
+                            for (DataSnapshot data2 : data.getChildren()) {
+                                if (data2.getKey().equals("score")) {
+                                    demage += Integer.parseInt(data2.getValue().toString());
+                                    score = Integer.parseInt(data2.getValue().toString());
+                                } else if (data2.getKey().equals("name")) {
+                                    name = data2.getValue().toString();
+                                } else if (data2.getKey().equals("number")) {
+                                    number = Integer.parseInt(data2.getValue().toString());
+                                }
+                            }
+                            PokerResult pokerResult = new PokerResult(score, name);
+                            pokerResult.setNumber(number);
+                            pokerResults.add(pokerResult);
+                        }
+                        txtPokerPower.setText(Integer.toString(demage));
+                        Collections.sort(pokerResults);
+                        pokerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                builder = new AlertDialog.Builder(getActivity());
+                builder.setView(main);
+
+                alertDialog = builder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show();
+            }
+        });
 
         rgFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
