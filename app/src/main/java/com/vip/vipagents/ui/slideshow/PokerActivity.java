@@ -123,7 +123,7 @@ public class PokerActivity extends AppCompatActivity {
 
         pokerSet = new PokerSet();
 
-        uploadExp(0);
+        if (!loadProfile().equals("null") && loadProfile() != null) uploadExp(0);
 
         pokerResults = new ArrayList<PokerResult>();
         pokerAdapter = new PokerAdapter(PokerActivity.this, pokerResults);
@@ -193,7 +193,7 @@ public class PokerActivity extends AppCompatActivity {
                 final Button btnOK = view.findViewById(R.id.btnOK);
                 final Button btnCancel = view.findViewById(R.id.btnCancel);
 
-                txtView.setText("포커들이 모두 초기화되고 티켓은 2개만 지급됩니다.");
+                txtView.setText("포커들이 모두 초기화되고 티켓은 2개만 지급됩니다. 초기화시 경험치 200을 소모합니다. 경험치가 100 이하일 경우는 0으로 초기화됩니다.");
                 btnOK.setText("초기화");
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {

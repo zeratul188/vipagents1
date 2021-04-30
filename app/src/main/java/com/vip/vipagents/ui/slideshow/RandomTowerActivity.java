@@ -98,7 +98,7 @@ public class RandomTowerActivity extends AppCompatActivity {
         progressLevel = findViewById(R.id.progressLevel);
 
         progressLevel.setMax(200);
-        uploadExp(0);
+        if (!loadProfile().equals("null") && loadProfile() != null) uploadExp(0);
 
         txtMoney.setText(Integer.toString(money));
 
@@ -133,7 +133,7 @@ public class RandomTowerActivity extends AppCompatActivity {
                 final Button btnOK = view.findViewById(R.id.btnOK);
                 final Button btnCancel = view.findViewById(R.id.btnCancel);
 
-                txtView.setText("랜덤 타워들이 모두 삭제되고 골드는 500으로 초기화됩니다. 초기화시 경험치 100을 소모합니다. 경험치가 100 이하일 경우는 0으로 초기화됩니다.");
+                txtView.setText("랜덤 타워들이 모두 삭제되고 골드는 500으로 초기화됩니다. 초기화시 경험치 200을 소모합니다. 경험치가 100 이하일 경우는 0으로 초기화됩니다.");
                 btnOK.setText("초기화");
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
