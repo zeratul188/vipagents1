@@ -21,7 +21,7 @@ public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
 
-    private LinearLayout layoutTimeAttack, layoutPoker, layoutRandomTower;
+    private LinearLayout layoutTimeAttack, layoutPoker, layoutRandomTower, layoutAbilityStone;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class SlideshowFragment extends Fragment {
         layoutTimeAttack = root.findViewById(R.id.layoutTimeAttack);
         layoutPoker = root.findViewById(R.id.layoutPoker);
         layoutRandomTower = root.findViewById(R.id.layoutRandomTower);
+        layoutAbilityStone = root.findViewById(R.id.layoutAbilityStone);
 
         layoutTimeAttack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +54,14 @@ public class SlideshowFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PokerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        layoutAbilityStone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), StoneActivity.class);
                 startActivity(intent);
             }
         });

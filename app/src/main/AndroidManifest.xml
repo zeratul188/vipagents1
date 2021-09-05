@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.slideshow.PokerActivity"></activity>
+        <activity android:name=".ui.slideshow.StoneActivity"></activity>
+        <activity android:name=".ui.slideshow.PokerActivity" />
         <activity android:name=".ui.slideshow.RandomTowerActivity" />
         <activity
             android:name=".ui.tools.EventActivity"
